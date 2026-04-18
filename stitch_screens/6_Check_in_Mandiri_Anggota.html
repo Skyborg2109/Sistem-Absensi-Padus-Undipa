@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dipa Choir - Check-in</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#c4c6cf",
+                        "tertiary-fixed": "#ffe088",
+                        "on-secondary-fixed": "#131c2b",
+                        "inverse-primary": "#aec7f6",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#3e4758",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#e9c349",
+                        "on-tertiary-fixed": "#241a00",
+                        "primary": "#000a1e",
+                        "on-secondary-container": "#5a6375",
+                        "on-primary-fixed": "#001b3d",
+                        "inverse-on-surface": "#f0f1f2",
+                        "outline": "#74777f",
+                        "on-background": "#191c1d",
+                        "surface": "#f8f9fa",
+                        "tertiary-container": "#cca830",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#dae3f8",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d9dadb",
+                        "surface-container": "#edeeef",
+                        "surface-container-highest": "#e1e3e4",
+                        "primary-fixed": "#d6e3ff",
+                        "surface-bright": "#f8f9fa",
+                        "on-primary-container": "#708ab5",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2e3132",
+                        "on-surface-variant": "#44474e",
+                        "background": "#f8f9fa",
+                        "secondary-container": "#d7e0f5",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e7e8e9",
+                        "secondary": "#565f70",
+                        "on-tertiary-fixed-variant": "#574500",
+                        "on-tertiary-container": "#4f3e00",
+                        "secondary-fixed-dim": "#bec7db",
+                        "surface-variant": "#e1e3e4",
+                        "primary-fixed-dim": "#aec7f6",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#002147",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "surface-container-low": "#f3f4f5",
+                        "tertiary": "#735c00",
+                        "surface-tint": "#465f88"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": [
+                            "Plus Jakarta Sans", "sans-serif"
+                        ],
+                        "body": [
+                            "Inter", "sans-serif"
+                        ],
+                        "label": [
+                            "Inter", "sans-serif"
+                        ]
+                    }
+                },
+            },
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa; /* surface */
+            color: #191c1d; /* on-surface */
+        }
+        h1, h2, h3, h4, h5, h6, .font-headline {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        /* Custom Gradient for Primary Buttons */
+        .bg-primary-gradient {
+            background: linear-gradient(135deg, #000a1e 0%, #002147 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col md:flex-row">
+<!-- TopNavBar (Mobile View primarily, hidden on md+) -->
+<nav class="md:hidden bg-white/70 backdrop-blur-xl fixed top-0 w-full z-50 flex justify-between items-center px-6 py-3 shadow-sm font-['Plus_Jakarta_Sans'] tracking-tight">
+<div class="text-xl font-bold tracking-tighter text-blue-900">Dipa Choir</div>
+<div class="flex gap-4 items-center">
+<button class="hover:bg-slate-100/50 transition-colors rounded-full p-2 scale-95 duration-200 text-blue-950">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="hover:bg-slate-100/50 transition-colors rounded-full p-2 scale-95 duration-200 text-blue-950">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<img alt="Member profile photo" class="w-8 h-8 rounded-full border border-surface-variant object-cover" data-alt="Close up portrait of young professional woman with natural makeup and subtle smile, well lit" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzOVFAI9zPkzUzGc4zt_dPfr8cEeUWKkbLYhTPMnA-kqZhmlob32XPv6D4nfLHjT7yatQU8NvOgSExwnUxALXOfJF1YF9J24WtHkoY5zx687hth5zPX_rTItDSdQjTtd8Hkhx_MdO3W_J0nLvKry695L8hBnOAdI6uOAsxXlJEiCpR1Po9qRuXED59KZ9pM_tDILCJdesBdAvQRWHZEjpS-c9hE8U8Rom2YQi822VZ0C9_bPWUOFnMkgdZjbtcTZ3uAaVaK9tq4ms"/>
+</div>
+</nav>
+<!-- SideNavBar (Desktop View) -->
+<aside class="hidden md:flex flex-col h-screen w-64 bg-slate-50 border-r-0 py-8 px-4 gap-2 font-['Plus_Jakarta_Sans'] text-sm font-medium z-40 fixed">
+<div class="mb-8 px-2">
+<div class="flex items-center gap-3 mb-2">
+<img alt="Universitas Dipa Makassar Logo" class="w-10 h-10 rounded-full bg-surface-container-high p-1" data-alt="Abstract minimalist logo design featuring geometric shapes in navy and gold colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfoloHbYlYZmICt8rb1CwvG4ZwGjEQzYfHqR4jCQHlGIGc_J4PaKL7LZ3oPpmooOoPA7AcpFr-0wloNuQpkxGj_h-12SE8oZs4X_4__VLvO-OMXqDgb-kBf0kHGEWGgsuNQuj6UC4sMYv--pqB2VuAxSBmjwyRLnyBYSO0uM3rrmyVT1g4PbNvJ0lssYaksK7LG3UBBRASGIKU1ZgZP22eUYcTg6uBFmg3nReKdtyFK2yXWsnbQOjIRHeHfLSyooj_DmPZyCRFkgk"/>
+<div class="text-lg font-black text-blue-950 uppercase tracking-widest">Dipa Choir</div>
+</div>
+<div class="text-slate-500 text-xs">Member Portal</div>
+<div class="font-bold text-blue-900 mt-1">The Orchestrated Ledger</div>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:translate-x-1 duration-300 transition-all ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<!-- Active State -->
+<a class="flex items-center gap-3 px-4 py-3 bg-white text-blue-900 rounded-xl shadow-sm hover:translate-x-1 duration-300 transition-all ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="person_check">person_check</span>
+                My Attendance
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:translate-x-1 duration-300 transition-all ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+                Schedule
+            </a>
+</nav>
+<div class="mt-auto flex flex-col gap-4">
+<button class="w-full bg-primary-gradient text-on-primary py-3 px-4 rounded-full font-bold shadow-md hover:opacity-90 transition-opacity">
+                Check-in Now
+            </button>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-600 hover:translate-x-1 duration-300 transition-all ease-in-out mt-4" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 pt-20 md:pt-0 p-6 md:p-12 lg:p-16 relative overflow-y-auto">
+<!-- Header -->
+<header class="mb-12">
+<h1 class="font-headline text-4xl md:text-5xl font-bold text-on-surface tracking-tight mb-2">Check-in</h1>
+<p class="text-on-surface-variant text-body-md">Verify your attendance for today's rehearsal.</p>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-7xl mx-auto">
+<!-- Primary Action Column (QR & GPS) -->
+<div class="lg:col-span-7 flex flex-col gap-8">
+<!-- QR Scanner Interface Simulation -->
+<section class="bg-surface-container-low rounded-[1.5rem] p-6 lg:p-8 relative overflow-hidden group">
+<div class="flex justify-between items-center mb-6 z-10 relative">
+<h2 class="font-headline text-2xl font-semibold text-on-surface">Scan QR Code</h2>
+<span class="bg-surface-container-lowest text-primary px-3 py-1 rounded-full text-label-sm font-medium shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">qr_code_scanner</span> Scanner Active
+                        </span>
+</div>
+<!-- Scanner Box -->
+<div class="relative w-full aspect-square md:aspect-[4/3] bg-surface-container-highest rounded-xl overflow-hidden flex items-center justify-center shadow-inner z-10">
+<!-- Simulated Camera Feed / Blur Background -->
+<div class="absolute inset-0 opacity-40 bg-cover bg-center" data-alt="Blurred background showing a music stand and a grand piano in a softly lit rehearsal room" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCQAB58dhtgcLtf2bLwjPYcI892WLqStlFicVrTAR6Je8KNJsbg75ZSDSEShgmH63T7B8XCgpZLaz2kWADynBTR4lR2gw2HFtRSRb_W4RhCJ7RrLErNOAf0DBBwyUQFx_Rkn1aNzBppoihlNPpmqxmxLgbTS21Iw3NDuXxwzl1g4KzZeuwzhFTCvSK_GgiBVf8T2JREruCgVnXV0ASOD2RJuBNTLF6GoPYLS1QXRHw3KR4CPSbg6oaPYuLNpqkSEo_GlqsfgSg209g')"></div>
+<!-- Scanning Reticle -->
+<div class="relative w-3/4 max-w-xs aspect-square border-2 border-primary/20 rounded-lg">
+<!-- Corner Accents -->
+<div class="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-primary rounded-tl-lg"></div>
+<div class="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-primary rounded-tr-lg"></div>
+<div class="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-primary rounded-bl-lg"></div>
+<div class="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-primary rounded-br-lg"></div>
+<!-- Scanning Laser Line -->
+<div class="absolute top-1/2 left-0 w-full h-[2px] bg-tertiary-container shadow-[0_0_8px_2px_rgba(204,168,48,0.5)] animate-[pulse_2s_ease-in-out_infinite]"></div>
+</div>
+<!-- Scan Overlay Text -->
+<p class="absolute bottom-6 text-center w-full text-surface text-sm font-medium drop-shadow-md z-20">Align QR code within the frame</p>
+</div>
+</section>
+<!-- GPS Location Verification -->
+<section class="bg-surface-container-low rounded-[1.5rem] p-6 flex flex-col md:flex-row items-center gap-6">
+<div class="w-16 h-16 rounded-full bg-surface-container-lowest shadow-sm flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-3xl">location_on</span>
+</div>
+<div class="flex-1 text-center md:text-left">
+<h3 class="font-headline text-lg font-semibold text-on-surface">Verify Location</h3>
+<p class="text-on-surface-variant text-sm mt-1">Ensure you are within the rehearsal venue perimeter.</p>
+</div>
+<button class="bg-primary-gradient text-on-primary font-bold py-3 px-8 rounded-full shadow-md hover:opacity-90 transition-opacity whitespace-nowrap">
+                        Verify GPS
+                    </button>
+</section>
+</div>
+<!-- Secondary Info Column (Session Details & Status) -->
+<div class="lg:col-span-5 flex flex-col gap-8">
+<!-- Session Details Card -->
+<section class="bg-surface-container-lowest rounded-[1.5rem] p-6 lg:p-8 relative shadow-sm">
+<!-- Gold Thread Accent -->
+<div class="absolute left-0 top-6 bottom-6 w-1 bg-tertiary-container rounded-r-full"></div>
+<h2 class="font-headline text-xl font-semibold text-on-surface mb-6 pl-4">Current Session</h2>
+<div class="flex flex-col gap-5 pl-4">
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center shrink-0 text-secondary">
+<span class="material-symbols-outlined">music_note</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Session Name</p>
+<p class="font-headline text-lg font-medium text-on-surface">Mozart Requiem Rehearsal</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center shrink-0 text-secondary">
+<span class="material-symbols-outlined">event</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Date &amp; Time</p>
+<p class="font-headline text-lg font-medium text-on-surface">Oct 24, 2023</p>
+<p class="text-on-surface-variant text-sm">18:00 - 21:00 WITA</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center shrink-0 text-secondary">
+<span class="material-symbols-outlined">apartment</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Location</p>
+<p class="font-headline text-lg font-medium text-on-surface">Auditorium Utama</p>
+<p class="text-on-surface-variant text-sm">Universitas Dipa Makassar</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Check-in Status (Pending State shown for illustration) -->
+<section class="bg-surface-container-low rounded-[1.5rem] p-6 text-center">
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Status</p>
+<div class="inline-flex items-center gap-2 bg-tertiary-fixed text-on-tertiary-fixed-variant px-4 py-2 rounded-full font-medium shadow-sm">
+<span class="material-symbols-outlined text-[18px]">hourglass_empty</span>
+                        Awaiting Check-in
+                    </div>
+<p class="text-xs text-on-surface-variant mt-4">Scan QR code or verify location to complete check-in.</p>
+</section>
+<!-- Example Success State (Hidden by default, structure provided)
+                 <section class="bg-surface-container-lowest rounded-[1.5rem] p-6 text-center shadow-sm relative overflow-hidden">
+                    <div class="absolute inset-0 bg-surface-container opacity-20"></div>
+                    <div class="relative z-10 flex flex-col items-center">
+                        <div class="w-16 h-16 bg-surface-container rounded-full flex items-center justify-center mb-4 text-[#146c2e]">
+                            <span class="material-symbols-outlined text-4xl">check_circle</span>
+                        </div>
+                        <p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Status</p>
+                        <h3 class="font-headline text-xl font-bold text-[#146c2e] mb-2">Successfully Checked-in</h3>
+                        <p class="text-sm text-on-surface-variant">Timestamp: 17:45 WITA</p>
+                    </div>
+                </section>
+                -->
+</div>
+</div>
+</main>
+</body></html>

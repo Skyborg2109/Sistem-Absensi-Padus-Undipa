@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dipa Choir - Member Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#c4c6cf",
+                        "tertiary-fixed": "#ffe088",
+                        "on-secondary-fixed": "#131c2b",
+                        "inverse-primary": "#aec7f6",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#3e4758",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#e9c349",
+                        "on-tertiary-fixed": "#241a00",
+                        "primary": "#000a1e",
+                        "on-secondary-container": "#5a6375",
+                        "on-primary-fixed": "#001b3d",
+                        "inverse-on-surface": "#f0f1f2",
+                        "outline": "#74777f",
+                        "on-background": "#191c1d",
+                        "surface": "#f8f9fa",
+                        "tertiary-container": "#cca830",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#dae3f8",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d9dadb",
+                        "surface-container": "#edeeef",
+                        "surface-container-highest": "#e1e3e4",
+                        "primary-fixed": "#d6e3ff",
+                        "surface-bright": "#f8f9fa",
+                        "on-primary-container": "#708ab5",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2e3132",
+                        "on-surface-variant": "#44474e",
+                        "background": "#f8f9fa",
+                        "secondary-container": "#d7e0f5",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e7e8e9",
+                        "secondary": "#565f70",
+                        "on-tertiary-fixed-variant": "#574500",
+                        "on-tertiary-container": "#4f3e00",
+                        "secondary-fixed-dim": "#bec7db",
+                        "surface-variant": "#e1e3e4",
+                        "primary-fixed-dim": "#aec7f6",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#002147",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "surface-container-low": "#f3f4f5",
+                        "tertiary": "#735c00",
+                        "surface-tint": "#465f88"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": [
+                            "Plus Jakarta Sans", "sans-serif"
+                        ],
+                        "body": [
+                            "Inter", "sans-serif"
+                        ],
+                        "label": [
+                            "Inter", "sans-serif"
+                        ]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.surface');
+            color: theme('colors.on-surface');
+            font-family: theme('fontFamily.body');
+        }
+        
+        .bg-glass {
+            background: theme('colors.surface');
+            opacity: 0.7;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .gradient-cta {
+            background: linear-gradient(135deg, theme('colors.primary'), theme('colors.primary-container'));
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex w-full">
+<!-- SideNavBar (Web Only) -->
+<aside class="hidden md:flex flex-col h-screen w-64 bg-slate-50 border-r-0 fixed left-0 top-0 py-8 px-4 gap-2 z-40 bg-surface-container-low">
+<div class="mb-8 px-4">
+<h1 class="text-lg font-black text-primary uppercase tracking-widest font-headline">The Orchestrated Ledger</h1>
+<p class="text-sm text-on-surface-variant font-label mt-1">Member Portal</p>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<!-- Dashboard (Active) -->
+<a class="bg-white text-primary rounded-xl shadow-sm flex items-center gap-3 px-4 py-3 font-body text-sm font-medium hover:translate-x-1 duration-300 transition-all ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+                Dashboard
+            </a>
+<!-- My Attendance -->
+<a class="text-slate-600 flex items-center gap-3 px-4 py-3 font-body text-sm font-medium hover:translate-x-1 duration-300 transition-all ease-in-out hover:bg-slate-100/50 rounded-xl" href="#">
+<span class="material-symbols-outlined">person_check</span>
+                My Attendance
+            </a>
+<!-- Schedule -->
+<a class="text-slate-600 flex items-center gap-3 px-4 py-3 font-body text-sm font-medium hover:translate-x-1 duration-300 transition-all ease-in-out hover:bg-slate-100/50 rounded-xl" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+                Schedule
+            </a>
+</nav>
+<div class="mt-auto pt-4 border-t border-outline-variant/15">
+<!-- CTA Check-in -->
+<button class="w-full gradient-cta text-on-primary rounded-full py-3 px-4 flex items-center justify-center gap-2 font-headline font-semibold text-sm hover:opacity-90 transition-opacity mb-4">
+<span class="material-symbols-outlined text-tertiary-fixed">how_to_reg</span>
+                Check-in Now
+            </button>
+<!-- Logout -->
+<a class="text-slate-600 flex items-center gap-3 px-4 py-3 font-body text-sm font-medium hover:translate-x-1 duration-300 transition-all ease-in-out hover:bg-slate-100/50 rounded-xl" href="#">
+<span class="material-symbols-outlined">logout</span>
+                Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 w-full md:ml-64 flex flex-col min-h-screen">
+<!-- TopNavBar (Mobile Only) -->
+<header class="md:hidden bg-white/70 backdrop-blur-xl fixed top-0 w-full z-50 shadow-sm flex justify-between items-center px-6 py-3 w-full font-['Plus_Jakarta_Sans'] tracking-tight">
+<div class="text-xl font-bold tracking-tighter text-blue-900">Dipa Choir</div>
+<div class="flex items-center gap-4">
+<button class="text-blue-950 scale-95 duration-200 hover:bg-slate-100/50 rounded-full p-2">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-blue-950 scale-95 duration-200 hover:bg-slate-100/50 rounded-full p-2">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<img alt="Member profile photo" class="w-8 h-8 rounded-full border border-outline-variant/30" data-alt="Portrait of a young man smiling, natural lighting, soft focus background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDF9FQon6fR8Uk16HccKDKEa5BHjTDFlYjOckj9cWVyR_rAmACQ_0pHIqtRchnwck6IT8rfUHz4aUfVRMGehNiVsdIdeigh5TN6bucLOPVQLJtyaEyTQU34v754RvZATJt-pkpXdYF-og1QOaHVpV3a7B_vZp9ZqbBFOobCRfvjJ_OuI4iuwfRhDHPZug8pPY4dHdv4mJhfPiFCfbNXgpoNq7X3W0WFHHTrf8ixy-P4eyPElch-qdyYO6Q5vYGHsuKa9IUDIBd1uGM"/>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<div class="flex-1 p-6 md:p-12 pt-24 md:pt-12 bg-surface">
+<!-- Welcome Header -->
+<div class="mb-12 max-w-5xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h2 class="font-headline text-display-lg font-bold text-on-surface tracking-tight leading-tight">Good evening,<br/>Willy.</h2>
+<p class="font-body text-body-md text-on-surface-variant mt-2 max-w-md">Your vocal presence shapes the harmony. Review your upcoming schedule and recent performance.</p>
+</div>
+<!-- Mobile Check-in CTA (Visible only on mobile since sidebar has it on web) -->
+<button class="md:hidden w-full sm:w-auto gradient-cta text-on-primary rounded-full py-3 px-6 flex items-center justify-center gap-2 font-headline font-semibold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_32px_rgba(0,10,30,0.15)]">
+<span class="material-symbols-outlined text-tertiary-fixed">how_to_reg</span>
+                    Check-in Now
+                </button>
+</div>
+<!-- Bento Grid Layout -->
+<div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Next Rehearsal Card (Spans 8 cols) -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-xl p-8 relative overflow-hidden flex flex-col justify-between">
+<!-- Decor element -->
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-tertiary-container"></div>
+<div>
+<div class="flex items-center gap-2 text-on-surface-variant mb-4 font-label text-sm uppercase tracking-wider font-semibold">
+<span class="material-symbols-outlined text-tertiary">schedule</span>
+                            Next Rehearsal
+                        </div>
+<h3 class="font-headline text-headline-md font-bold text-on-surface mb-2">Symphony of the Night Pre-Check</h3>
+<p class="font-body text-body-md text-on-surface-variant mb-6">Auditorium Utama Universitas Dipa Makassar</p>
+</div>
+<div class="flex flex-wrap items-end justify-between gap-4 mt-8">
+<div class="flex gap-4">
+<div class="bg-surface-container-low px-4 py-3 rounded-lg text-center min-w-[4.5rem]">
+<span class="block font-headline font-bold text-2xl text-primary">02</span>
+<span class="block font-label text-xs text-on-surface-variant uppercase mt-1">Days</span>
+</div>
+<div class="bg-surface-container-low px-4 py-3 rounded-lg text-center min-w-[4.5rem]">
+<span class="block font-headline font-bold text-2xl text-primary">14</span>
+<span class="block font-label text-xs text-on-surface-variant uppercase mt-1">Hours</span>
+</div>
+<div class="bg-surface-container-low px-4 py-3 rounded-lg text-center min-w-[4.5rem]">
+<span class="block font-headline font-bold text-2xl text-primary">45</span>
+<span class="block font-label text-xs text-on-surface-variant uppercase mt-1">Mins</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label text-sm text-on-surface-variant mb-1">Status</span>
+<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-tertiary-fixed text-on-tertiary-fixed-variant gap-1">
+<span class="material-symbols-outlined text-[14px]">pending_actions</span>
+                                Action Required
+                            </span>
+</div>
+</div>
+</div>
+<!-- Personal Stats Card (Spans 4 cols) -->
+<div class="md:col-span-4 bg-surface-container-lowest rounded-xl p-8 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 text-on-surface-variant mb-4 font-label text-sm uppercase tracking-wider font-semibold">
+<span class="material-symbols-outlined text-primary">analytics</span>
+                            Attendance Health
+                        </div>
+</div>
+<div class="flex-1 flex flex-col justify-center items-center py-6">
+<!-- Radial Progress visual representation -->
+<div class="relative w-32 h-32 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle class="text-surface-container-high" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-dasharray="282.7" stroke-dashoffset="33.9" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-headline font-bold text-3xl text-primary">88%</span>
+</div>
+</div>
+<p class="font-body text-sm text-on-surface-variant mt-4 text-center">Good standing. Aim for 90% for solo eligibility.</p>
+</div>
+</div>
+<!-- Recent Activity (Spans 12 cols) -->
+<div class="md:col-span-12 bg-surface-container-lowest rounded-xl p-8 mt-2">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline text-xl font-bold text-on-surface">Recent Rehearsals</h3>
+<a class="text-sm font-semibold text-tertiary hover:text-tertiary-container transition-colors" href="#">View All Archive</a>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Row 1 -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-surface-container-low/50 hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4 mb-3 sm:mb-0">
+<div class="w-12 h-12 rounded-lg bg-surface flex items-center justify-center text-on-surface-variant">
+<span class="font-headline font-bold text-sm">Oct 12</span>
+</div>
+<div>
+<h4 class="font-headline font-semibold text-on-surface">Sectional Practice (Tenor)</h4>
+<p class="font-body text-sm text-on-surface-variant">Ruang Paduan Suara Lt. 2</p>
+</div>
+</div>
+<span class="inline-flex w-max items-center px-3 py-1 rounded-full text-xs font-semibold bg-surface-container text-primary gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                                Present
+                            </span>
+</div>
+<!-- Row 2 -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-surface-container-low/50 hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4 mb-3 sm:mb-0">
+<div class="w-12 h-12 rounded-lg bg-surface flex items-center justify-center text-on-surface-variant">
+<span class="font-headline font-bold text-sm">Oct 05</span>
+</div>
+<div>
+<h4 class="font-headline font-semibold text-on-surface">Full Choir Rehearsal</h4>
+<p class="font-body text-sm text-on-surface-variant">Auditorium Utama</p>
+</div>
+</div>
+<span class="inline-flex w-max items-center px-3 py-1 rounded-full text-xs font-semibold bg-tertiary-fixed text-on-tertiary-fixed-variant gap-1">
+<span class="material-symbols-outlined text-[14px]">event_note</span>
+                                Permission
+                            </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full bg-surface-container-lowest z-50 pb-safe pt-2 px-6 flex justify-between items-center shadow-[0_-4px_32px_rgba(0,10,30,0.08)]">
+<a class="flex flex-col items-center p-2 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-[10px] font-medium font-body mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center p-2 text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">person_check</span>
+<span class="text-[10px] font-medium font-body mt-1">Attendance</span>
+</a>
+<a class="flex flex-col items-center p-2 text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-[10px] font-medium font-body mt-1">Schedule</span>
+</a>
+<a class="flex flex-col items-center p-2 text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium font-body mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

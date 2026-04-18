@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sistem Absensi Paduan Suara - Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "inverse-on-surface": "#f0f1f2",
+                    "on-secondary-fixed-variant": "#3e4758",
+                    "secondary": "#565f70",
+                    "surface-variant": "#e1e3e4",
+                    "inverse-surface": "#2e3132",
+                    "inverse-primary": "#aec7f6",
+                    "secondary-fixed-dim": "#bec7db",
+                    "surface-bright": "#f8f9fa",
+                    "on-tertiary-fixed-variant": "#574500",
+                    "outline-variant": "#c4c6cf",
+                    "on-tertiary-fixed": "#241a00",
+                    "surface-container-high": "#e7e8e9",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-low": "#f3f4f5",
+                    "surface-dim": "#d9dadb",
+                    "tertiary-fixed-dim": "#e9c349",
+                    "primary-container": "#002147",
+                    "on-error": "#ffffff",
+                    "on-background": "#191c1d",
+                    "on-tertiary-container": "#4f3e00",
+                    "surface": "#f8f9fa",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#cca830",
+                    "surface-container": "#edeeef",
+                    "on-primary-fixed-variant": "#2d476f",
+                    "outline": "#74777f",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed": "#001b3d",
+                    "surface-tint": "#465f88",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface": "#191c1d",
+                    "error": "#ba1a1a",
+                    "tertiary": "#735c00",
+                    "surface-container-highest": "#e1e3e4",
+                    "secondary-fixed": "#dae3f8",
+                    "background": "#f8f9fa",
+                    "on-primary-container": "#708ab5",
+                    "on-surface-variant": "#44474e",
+                    "primary": "#000a1e",
+                    "tertiary-fixed": "#ffe088",
+                    "secondary-container": "#d7e0f5",
+                    "primary-fixed": "#d6e3ff",
+                    "on-secondary-fixed": "#131c2b",
+                    "on-secondary-container": "#5a6375",
+                    "primary-fixed-dim": "#aec7f6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans", "sans-serif"],
+                    "body": ["Inter", "sans-serif"],
+                    "label": ["Inter", "sans-serif"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, h4, h5, h6, .font-headline {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen flex items-center justify-center p-4 antialiased text-on-surface relative overflow-hidden">
+<!-- Decorative Background Elements -->
+<div class="absolute inset-0 z-0 bg-gradient-to-br from-primary-fixed via-background to-secondary-container opacity-40"></div>
+<div class="absolute -top-32 -right-32 w-96 h-96 bg-primary-fixed rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+<div class="absolute -bottom-32 -left-32 w-96 h-96 bg-secondary-container rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+<main class="w-full max-w-md relative z-10">
+<!-- Elevated Card Container -->
+<div class="bg-surface-container-lowest/80 backdrop-blur-xl rounded-xl shadow-[0_32px_64px_rgba(0,10,30,0.06)] overflow-hidden border border-surface-container-high/50 p-8 sm:p-10">
+<!-- Logo & Brand Header -->
+<div class="flex flex-col items-center mb-10">
+<div class="w-20 h-20 bg-surface-container-low rounded-full flex items-center justify-center mb-6 shadow-inner relative overflow-hidden">
+<span class="material-symbols-outlined text-4xl text-primary" style="font-variation-settings: 'FILL' 1;">music_note</span>
+</div>
+<h1 class="font-headline text-3xl font-bold tracking-tight text-on-surface text-center mb-2">Sistem Absensi Paduan Suara</h1>
+<p class="font-body text-sm text-on-surface-variant text-center">Universitas Dipa Makassar Choir</p>
+</div>
+<!-- Login Form -->
+<form class="space-y-6">
+<!-- Email Field -->
+<div class="space-y-2">
+<label class="block font-label text-sm font-medium text-on-surface" for="email">Email / Username</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">person</span>
+</div>
+<input class="block w-full pl-12 pr-4 py-3 bg-surface-container-low border-none rounded-lg text-on-surface font-body text-base focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder:text-on-surface-variant/50" id="email" name="email" placeholder="Enter your credentials" type="text"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<label class="block font-label text-sm font-medium text-on-surface" for="password">Password</label>
+<a class="font-label text-sm font-medium text-tertiary hover:text-tertiary-container transition-colors" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">lock</span>
+</div>
+<input class="block w-full pl-12 pr-12 py-3 bg-surface-container-low border-none rounded-lg text-on-surface font-body text-base focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-colors placeholder:text-on-surface-variant/50" id="password" name="password" placeholder="••••••••" type="password"/>
+<div class="absolute inset-y-0 right-0 pr-4 flex items-center">
+<button class="text-on-surface-variant hover:text-on-surface transition-colors focus:outline-none" type="button">
+<span class="material-symbols-outlined text-xl">visibility_off</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Submit Button -->
+<div class="pt-4">
+<button class="w-full flex items-center justify-center py-3.5 px-6 rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-semibold text-base shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-primary-fixed" type="submit">
+                        Login
+                        <span class="material-symbols-outlined ml-2 text-xl">arrow_forward</span>
+</button>
+</div>
+</form>
+<!-- Contextual Information -->
+<div class="mt-8 pt-6 border-t border-surface-container-high/50 text-center">
+<p class="font-body text-xs text-on-surface-variant flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-sm">verified</span>
+                    Secure access for authorized members only
+                </p>
+</div>
+</div>
+</main>
+</body></html>

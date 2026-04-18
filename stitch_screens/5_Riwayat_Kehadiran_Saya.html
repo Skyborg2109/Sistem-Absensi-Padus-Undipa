@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Attendance Ledger</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#c4c6cf",
+                        "tertiary-fixed": "#ffe088",
+                        "on-secondary-fixed": "#131c2b",
+                        "inverse-primary": "#aec7f6",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#3e4758",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#e9c349",
+                        "on-tertiary-fixed": "#241a00",
+                        "primary": "#000a1e",
+                        "on-secondary-container": "#5a6375",
+                        "on-primary-fixed": "#001b3d",
+                        "inverse-on-surface": "#f0f1f2",
+                        "outline": "#74777f",
+                        "on-background": "#191c1d",
+                        "surface": "#f8f9fa",
+                        "tertiary-container": "#cca830",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#dae3f8",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d9dadb",
+                        "surface-container": "#edeeef",
+                        "surface-container-highest": "#e1e3e4",
+                        "primary-fixed": "#d6e3ff",
+                        "surface-bright": "#f8f9fa",
+                        "on-primary-container": "#708ab5",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2e3132",
+                        "on-surface-variant": "#44474e",
+                        "background": "#f8f9fa",
+                        "secondary-container": "#d7e0f5",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e7e8e9",
+                        "secondary": "#565f70",
+                        "on-tertiary-fixed-variant": "#574500",
+                        "on-tertiary-container": "#4f3e00",
+                        "secondary-fixed-dim": "#bec7db",
+                        "surface-variant": "#e1e3e4",
+                        "primary-fixed-dim": "#aec7f6",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#002147",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "surface-container-low": "#f3f4f5",
+                        "tertiary": "#735c00",
+                        "surface-tint": "#465f88"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface font-body text-on-surface flex h-screen overflow-hidden selection:bg-inverse-primary selection:text-primary">
+<!-- Desktop SideNav -->
+<nav class="hidden md:flex flex-col h-screen w-64 bg-surface-container-low py-8 px-4 gap-2 shrink-0 border-r-0">
+<div class="mb-8 px-4">
+<span class="font-headline text-lg font-black text-primary uppercase tracking-widest block leading-tight">The Orchestrated Ledger</span>
+<p class="text-xs text-on-surface-variant mt-1 font-medium">Member Portal</p>
+</div>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:translate-x-1 transition-all ease-in-out duration-300 rounded-xl group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">dashboard</span>
+<span class="font-headline text-sm font-medium group-hover:text-primary transition-colors">Dashboard</span>
+</a>
+<!-- Active Nav Item -->
+<a class="flex items-center gap-3 px-4 py-3 bg-surface-container-lowest text-primary rounded-xl relative overflow-hidden group" href="#">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-tertiary-container rounded-l-xl"></div>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">person_check</span>
+<span class="font-headline text-sm font-semibold">My Attendance</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:translate-x-1 transition-all ease-in-out duration-300 rounded-xl group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">calendar_month</span>
+<span class="font-headline text-sm font-medium group-hover:text-primary transition-colors">Schedule</span>
+</a>
+<div class="flex-grow"></div>
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-full py-3 px-4 font-headline text-sm font-bold shadow-[0_8px_32px_rgba(0,10,30,0.06)] hover:opacity-95 transition-opacity mb-4">
+            Check-in Now
+        </button>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="font-headline text-sm font-medium">Logout</span>
+</a>
+</nav>
+<!-- Main Canvas -->
+<main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+<!-- TopNavBar Header -->
+<header class="w-full flex justify-between items-center px-6 py-3 bg-surface/70 backdrop-blur-[20px] sticky top-0 z-50">
+<div class="md:hidden">
+<span class="font-headline text-xl font-bold tracking-tighter text-primary">Dipa Choir</span>
+</div>
+<div class="hidden md:block"></div>
+<div class="flex items-center gap-2">
+<button class="text-on-surface-variant hover:bg-surface-container-high p-2 rounded-full transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-high p-2 rounded-full transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+</button>
+<img alt="Member profile photo" class="w-9 h-9 rounded-full object-cover ml-3 shadow-sm border-[0.5px] border-surface-container-high" data-alt="close-up portrait of a young professional woman with natural lighting and a neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKqXUx7TP9AYRJyrVO_nB9HWxeMdUK-ofOzo9Zztke6u6BhE8yVrJg4PoxsgEx3RQ5YezrR1WNFnNWZVyRt2HfrF8WoEdk54vaacGdqFNwqrApwgs0hCoyU20IfPuilxjHXPf7Dr1cpdp1OAzyRQIHgORGuHRYEEGdCRfYLdP-Gka31hV4WNYt0TTAP85Ipx5ZVytT8YY_H-23zzdQVmxb5gCHSqE6sjksOAkIhwHsobiaF64Q7tqLZsFFwLRuE5pT6CD-YKn56Mc"/>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-5 md:p-10 lg:px-14">
+<div class="max-w-[1000px] mx-auto space-y-10">
+<!-- Page Title -->
+<div class="flex flex-col gap-1">
+<h1 class="font-headline text-4xl md:text-[2.5rem] font-extrabold text-primary tracking-[-0.02em] leading-tight">Attendance Ledger</h1>
+<p class="text-on-surface-variant font-body text-base mt-1 max-w-2xl">Review your historical rehearsal commitments and overall engagement standing for the current season.</p>
+</div>
+<!-- Asymmetric Bento Summary -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Primary Metric Card -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-[1.5rem] p-8 relative overflow-hidden flex flex-col justify-between min-h-[220px]">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-tertiary-container"></div>
+<div class="flex justify-between items-start relative z-10 w-full">
+<p class="text-on-surface-variant font-headline text-sm uppercase tracking-wider font-bold">Overall Standing</p>
+<span class="inline-flex items-center gap-1.5 bg-surface-container px-3 py-1.5 rounded-full text-xs font-semibold text-primary">
+<span class="material-symbols-outlined text-[16px]">monitoring</span>
+                                Excellent
+                            </span>
+</div>
+<div class="relative z-10 mt-6">
+<div class="flex items-baseline gap-1">
+<span class="font-headline text-7xl md:text-[5.5rem] font-black text-primary tracking-tighter leading-none">92</span>
+<span class="font-headline text-3xl text-on-surface-variant font-bold">%</span>
+</div>
+<p class="text-sm font-body text-on-surface-variant mt-2 font-medium">Attendance Rate • 24 of 26 sessions</p>
+</div>
+<!-- Ambient Texture -->
+<div class="absolute right-[-10%] bottom-[-20%] w-[60%] h-[120%] bg-gradient-to-br from-primary-fixed/30 to-transparent rounded-full blur-[40px] pointer-events-none"></div>
+</div>
+<!-- Secondary Metric Cards -->
+<div class="md:col-span-4 flex flex-col gap-6">
+<!-- Present Card -->
+<div class="bg-surface-container-low rounded-[1.5rem] p-6 flex-1 flex flex-col justify-center relative overflow-hidden">
+<p class="text-on-surface-variant font-headline text-xs font-bold uppercase tracking-wider mb-2">Total Present</p>
+<p class="font-headline text-4xl font-extrabold text-primary">24</p>
+<span class="material-symbols-outlined absolute right-4 bottom-4 text-[48px] text-surface-container-highest/50">how_to_reg</span>
+</div>
+<!-- Split Card for Exceptions -->
+<div class="bg-surface-container-lowest rounded-[1.5rem] p-6 flex-1 flex items-center justify-between shadow-[0_8px_32px_rgba(0,10,30,0.02)]">
+<div class="flex flex-col">
+<p class="text-on-surface-variant font-headline text-xs font-bold uppercase tracking-wider mb-1">Excused</p>
+<p class="font-headline text-2xl font-bold text-on-surface">2</p>
+</div>
+<div class="h-10 w-[1px] bg-surface-container-high"></div>
+<div class="flex flex-col text-right">
+<p class="text-on-surface-variant font-headline text-xs font-bold uppercase tracking-wider mb-1">Absent</p>
+<p class="font-headline text-2xl font-bold text-error">0</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Ledger List Section -->
+<div class="flex flex-col gap-6">
+<div class="flex justify-between items-end px-1">
+<h2 class="font-headline text-2xl font-bold text-primary tracking-tight">Recent Rehearsals</h2>
+<button class="text-sm font-bold text-tertiary hover:text-tertiary-container transition-colors flex items-center gap-1.5 pb-1">
+                            Filter
+                            <span class="material-symbols-outlined text-[18px]">tune</span>
+</button>
+</div>
+<!-- List Container (No vertical dividers, generous spacing) -->
+<div class="bg-surface-container-lowest rounded-[1.5rem] p-3 md:p-6 shadow-[0_8px_32px_rgba(0,10,30,0.03)] overflow-x-auto">
+<div class="min-w-[700px] flex flex-col gap-2">
+<!-- Header Row -->
+<div class="grid grid-cols-12 gap-4 px-6 py-4 rounded-xl bg-surface-container-lowest sticky top-0 z-10">
+<div class="col-span-3 text-xs font-headline font-bold text-on-surface-variant uppercase tracking-widest">Date &amp; Time</div>
+<div class="col-span-6 text-xs font-headline font-bold text-on-surface-variant uppercase tracking-widest">Session Details</div>
+<div class="col-span-3 text-xs font-headline font-bold text-on-surface-variant uppercase tracking-widest text-right">Status</div>
+</div>
+<!-- Row Item: Present -->
+<div class="grid grid-cols-12 gap-4 px-6 py-5 items-center bg-surface hover:bg-surface-container-low transition-colors rounded-xl group cursor-default">
+<div class="col-span-3 flex flex-col gap-1">
+<span class="font-headline font-bold text-primary text-sm">Oct 24, 2023</span>
+<span class="font-body text-xs text-on-surface-variant font-medium">Tuesday • 18:00 - 21:00</span>
+</div>
+<div class="col-span-6 flex flex-col gap-1 pr-4">
+<span class="font-headline font-bold text-on-surface text-sm">Pre-Concert Tutti Rehearsal</span>
+<span class="font-body text-xs text-on-surface-variant line-clamp-1">Focus: Mozart Requiem movements 1-3, full dynamics run-through.</span>
+</div>
+<div class="col-span-3 flex justify-end">
+<span class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-surface-container text-primary font-headline text-xs font-bold tracking-wide uppercase">
+                                        Present
+                                    </span>
+</div>
+</div>
+<!-- Row Item: Excused -->
+<div class="grid grid-cols-12 gap-4 px-6 py-5 items-center bg-surface hover:bg-surface-container-low transition-colors rounded-xl group cursor-default relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-tertiary-fixed opacity-50"></div>
+<div class="col-span-3 flex flex-col gap-1 pl-2">
+<span class="font-headline font-bold text-primary text-sm">Oct 19, 2023</span>
+<span class="font-body text-xs text-on-surface-variant font-medium">Thursday • 18:00 - 20:30</span>
+</div>
+<div class="col-span-6 flex flex-col gap-1 pr-4">
+<span class="font-headline font-bold text-on-surface text-sm">Sectionals: Soprano &amp; Alto</span>
+<span class="font-body text-xs text-on-surface-variant line-clamp-1">Focus: Intonation exercises and tricky passages in piece #4.</span>
+</div>
+<div class="col-span-3 flex justify-end">
+<span class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed-variant font-headline text-xs font-bold tracking-wide uppercase">
+                                        Excused
+                                    </span>
+</div>
+</div>
+<!-- Row Item: Present -->
+<div class="grid grid-cols-12 gap-4 px-6 py-5 items-center bg-surface hover:bg-surface-container-low transition-colors rounded-xl group cursor-default">
+<div class="col-span-3 flex flex-col gap-1">
+<span class="font-headline font-bold text-primary text-sm">Oct 17, 2023</span>
+<span class="font-body text-xs text-on-surface-variant font-medium">Tuesday • 18:00 - 21:00</span>
+</div>
+<div class="col-span-6 flex flex-col gap-1 pr-4">
+<span class="font-headline font-bold text-on-surface text-sm">Regular Tutti Rehearsal</span>
+<span class="font-body text-xs text-on-surface-variant line-clamp-1">Sight-reading new contemporary pieces for upcoming festival.</span>
+</div>
+<div class="col-span-3 flex justify-end">
+<span class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-surface-container text-primary font-headline text-xs font-bold tracking-wide uppercase">
+                                        Present
+                                    </span>
+</div>
+</div>
+<!-- Row Item: Absent (Alpha) -->
+<div class="grid grid-cols-12 gap-4 px-6 py-5 items-center bg-surface hover:bg-surface-container-low transition-colors rounded-xl group cursor-default relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-error-container"></div>
+<div class="col-span-3 flex flex-col gap-1 pl-2">
+<span class="font-headline font-bold text-primary text-sm">Oct 12, 2023</span>
+<span class="font-body text-xs text-on-surface-variant font-medium">Thursday • 18:00 - 20:30</span>
+</div>
+<div class="col-span-6 flex flex-col gap-1 pr-4">
+<span class="font-headline font-bold text-on-surface text-sm">Sectionals: Tenor &amp; Bass</span>
+<span class="font-body text-xs text-on-surface-variant line-clamp-1">Focus: Rhythmic precision in polyphonic sections.</span>
+</div>
+<div class="col-span-3 flex justify-end">
+<span class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-error-container text-on-error-container font-headline text-xs font-bold tracking-wide uppercase">
+                                        Absent
+                                    </span>
+</div>
+</div>
+<!-- Row Item: Present -->
+<div class="grid grid-cols-12 gap-4 px-6 py-5 items-center bg-surface hover:bg-surface-container-low transition-colors rounded-xl group cursor-default">
+<div class="col-span-3 flex flex-col gap-1">
+<span class="font-headline font-bold text-primary text-sm">Oct 10, 2023</span>
+<span class="font-body text-xs text-on-surface-variant font-medium">Tuesday • 18:00 - 21:00</span>
+</div>
+<div class="col-span-6 flex flex-col gap-1 pr-4">
+<span class="font-headline font-bold text-on-surface text-sm">Regular Tutti Rehearsal</span>
+<span class="font-body text-xs text-on-surface-variant line-clamp-1">General repertoire maintenance and vowel blending.</span>
+</div>
+<div class="col-span-3 flex justify-end">
+<span class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-surface-container text-primary font-headline text-xs font-bold tracking-wide uppercase">
+                                        Present
+                                    </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Spacer to let content breathe above screen edge -->
+<div class="h-24"></div>
+</div>
+</main>
+</body></html>
