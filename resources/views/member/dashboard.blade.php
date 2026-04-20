@@ -111,22 +111,29 @@
         </div>
         <div class="flex-1 flex flex-col justify-center items-center py-4">
             <!-- Radial Progress with UNDIPA colors -->
-            <div class="relative w-32 h-32 flex items-center justify-center">
+            <div class="relative w-36 h-36 flex items-center justify-center">
                 @php
                     $dasharray = 282.7;
                     $dashoffset = $dasharray - ($dasharray * ($stats['percentage'] / 100));
                 @endphp
-                <svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
-                    <circle cx="50" cy="50" fill="none" r="45" stroke="#dce2f0" stroke-width="8"></circle>
-                    <circle cx="50" cy="50" fill="none" r="45" stroke="#C8A84B" stroke-dasharray="{{ $dasharray }}" stroke-dashoffset="{{ $dashoffset }}" stroke-width="8" stroke-linecap="round" class="transition-all duration-1000"></circle>
-                    <circle cx="50" cy="50" fill="none" r="45" stroke="#003087" stroke-dasharray="282.7" stroke-dashoffset="66" stroke-width="3"></circle>
+                <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                    <!-- Background track -->
+                    <circle cx="50" cy="50" fill="none" r="45" stroke="#dce2f0" stroke-width="9"></circle>
+                    <!-- Progress arc (Hadir + Terlambat) -->
+                    <circle cx="50" cy="50" fill="none" r="45" stroke="url(#goldGradient)" stroke-dasharray="{{ $dasharray }}" stroke-dashoffset="{{ $dashoffset }}" stroke-width="9" stroke-linecap="round" class="transition-all duration-1000"></circle>
+                    <defs>
+                        <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#F0D060"/>
+                            <stop offset="100%" stop-color="#C8A820"/>
+                        </linearGradient>
+                    </defs>
                 </svg>
                 <div class="absolute inset-0 flex flex-col items-center justify-center">
                     <span class="font-headline font-extrabold text-3xl text-undipa-navy">{{ $stats['percentage'] }}%</span>
-                    <span class="text-[10px] font-bold text-undipa-gold uppercase tracking-wider">Hadir</span>
+                    <span class="text-[10px] font-bold text-undipa-gold uppercase tracking-wider">Kehadiran</span>
                 </div>
             </div>
-            <p class="font-body text-xs text-on-surface-variant mt-4 text-center">
+            <p class="font-body text-xs text-on-surface-variant mt-3 text-center">
                 @if($stats['percentage'] >= 90)
                     Luar biasa! Pertahankan performa vokal Anda.
                 @elseif($stats['percentage'] >= 75)
@@ -135,14 +142,19 @@
                     Tingkatkan kehadiran Anda untuk sesi berikutnya.
                 @endif
             </p>
-            <div class="mt-4 w-full flex justify-center gap-4">
-                <div class="flex items-center gap-1">
-                    <div class="w-2.5 h-2.5 rounded-full bg-undipa-gold"></div>
-                    <span class="text-[10px] text-undipa-navy font-bold">Hadir</span>
+            <!-- Real-time Stats Summary -->
+            <div class="mt-5 w-full grid grid-cols-3 divide-x divide-slate-100 border border-slate-100 rounded-xl overflow-hidden">
+                <div class="flex flex-col items-center py-2 px-1 bg-green-50">
+                    <span class="font-headline font-extrabold text-lg text-green-700">{{ $stats['hadir_count'] }}</span>
+                    <span class="text-[9px] font-bold text-green-600 uppercase tracking-wider">Hadir</span>
                 </div>
-                <div class="flex items-center gap-1">
-                    <div class="w-2.5 h-2.5 rounded-full bg-undipa-navy"></div>
-                    <span class="text-[10px] text-on-surface-variant font-medium">Target</span>
+                <div class="flex flex-col items-center py-2 px-1 bg-slate-50">
+                    <span class="font-headline font-extrabold text-lg text-slate-700">{{ $stats['total_sesi'] }}</span>
+                    <span class="text-[9px] font-bold text-slate-500 uppercase tracking-wider">Total</span>
+                </div>
+                <div class="flex flex-col items-center py-2 px-1 bg-red-50">
+                    <span class="font-headline font-extrabold text-lg text-red-600">{{ $stats['total_sesi'] - $stats['hadir_count'] }}</span>
+                    <span class="text-[9px] font-bold text-red-500 uppercase tracking-wider">Absen</span>
                 </div>
             </div>
         </div>

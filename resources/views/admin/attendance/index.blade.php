@@ -98,7 +98,21 @@
                             </div>
                             <div>
                                 <p class="text-sm font-bold text-slate-900">{{ $member->name }}</p>
-                                <p class="text-xs font-medium text-slate-500 md:hidden">{{ $member->voice_part ?? 'Soprano 1' }}</p>
+                                <div class="flex items-center gap-2">
+                                    <p class="text-xs font-medium text-slate-500 md:hidden">{{ $member->voice_part ?? 'Soprano 1' }}</p>
+                                    @if($attendance)
+                                        <span class="text-[10px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded border border-blue-100 font-bold flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-[12px]">schedule</span>
+                                            {{ $attendance->created_at->format('H:i') }}
+                                        </span>
+                                    @endif
+                                </div>
+                                @if($attendance && $attendance->notes)
+                                    <p class="text-[10px] text-slate-400 italic mt-0.5 flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[12px]">notes</span>
+                                        "{{ $attendance->notes }}"
+                                    </p>
+                                @endif
                             </div>
                         </div>
                     </div>

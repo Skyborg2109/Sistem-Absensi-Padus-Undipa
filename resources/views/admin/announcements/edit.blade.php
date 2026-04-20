@@ -68,10 +68,7 @@
                     </div>
                 @endif
                 
-                <form id="delete-attachment-form" action="{{ route('admin.announcements.deleteAttachment', $announcement->id) }}" method="POST" class="hidden">
-                    @csrf
-                    @method('DELETE')
-                </form>
+
                 <div class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer relative" id="fileUploadContainer">
                     <input type="file" name="attachment" id="attachment" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept=".pdf,.doc,.docx">
                     <span class="material-symbols-outlined text-4xl text-slate-400 mb-2">upload_file</span>
@@ -95,6 +92,11 @@
                     Simpan Perubahan
                 </button>
             </div>
+        </form>
+
+        <form id="delete-attachment-form" action="{{ route('admin.announcements.deleteAttachment', $announcement->id) }}" method="POST" class="hidden">
+            @csrf
+            @method('DELETE')
         </form>
     </div>
 </div>

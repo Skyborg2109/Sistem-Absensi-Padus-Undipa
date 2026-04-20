@@ -52,7 +52,7 @@
             $currentVoice = request('voice', 'Semua Suara');
         @endphp
         @foreach($voices as $v)
-            <button type="button" onclick="document.getElementById('voice_filter').value='{{ $v }}'; this.form.submit();" 
+            <button type="button" onclick="document.getElementById('voice_filter').value='{{ $v }}'; this.closest('form').submit();" 
                 class="whitespace-nowrap px-5 py-2.5 rounded-full font-headline text-sm transition-colors {{ $currentVoice === $v ? 'bg-blue-950 text-white font-semibold shadow-sm' : 'bg-surface text-on-surface hover:bg-surface-container-high font-medium' }}">
                 {{ $v }}
             </button>

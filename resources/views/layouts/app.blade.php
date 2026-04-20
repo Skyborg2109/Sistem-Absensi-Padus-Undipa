@@ -165,15 +165,17 @@
         .chart-bar-gold {
             background: linear-gradient(to top, #C8A820, #F7E586);
         }
-        /* Mobile topbar nav item glow */
+        /* Mobile topbar nav item */
         .undipa-topbar .nav-icon-btn {
-            background: rgba(255,255,255,0.12);
             color: #F7E586;
-            border-radius: 9999px;
-            transition: background 0.2s;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s;
         }
         .undipa-topbar .nav-icon-btn:hover {
-            background: rgba(240,208,96,0.25);
+            opacity: 0.8;
         }
         /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
@@ -286,7 +288,7 @@
                 <span class="text-base font-extrabold text-white font-['Plus_Jakarta_Sans'] tracking-tight">Dipa <span class="text-undipa-gold">Choir</span></span>
             </div>
             <div class="flex items-center gap-2 relative">
-                <button onclick="document.getElementById('notifDropdownMobile').classList.toggle('hidden')" class="relative nav-icon-btn p-2 undipa-topbar">
+                <button onclick="document.getElementById('notifDropdownMobile').classList.toggle('hidden')" class="relative nav-icon-btn">
                     <span class="material-symbols-outlined text-[22px] text-undipa-gold-light">notifications</span>
                     <span id="mobileNotifCount" class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-400 rounded-full hidden border border-white"></span>
                 </button>
@@ -302,7 +304,7 @@
                         <div class="p-4 text-center text-slate-500 text-sm">Tidak ada notifikasi</div>
                     </div>
                 </div>
-                <a href="{{ url('/settings') }}" class="nav-icon-btn p-2 undipa-topbar">
+                <a href="{{ url('/settings') }}" class="nav-icon-btn">
                     <span class="material-symbols-outlined text-[22px] text-blue-200">settings</span>
                 </a>
                 <a href="{{ url('/profile') }}">
@@ -318,7 +320,7 @@
                 <h2 class="text-xl font-extrabold text-undipa-navy font-['Plus_Jakarta_Sans'] tracking-tight">@yield('title', 'Sistem Absensi')</h2>
             </div>
             <div class="flex items-center gap-3 relative">
-                <button onclick="document.getElementById('notifDropdownDesktop').classList.toggle('hidden')" class="relative hover:bg-blue-50 transition-colors p-2.5 rounded-full duration-200 bg-blue-50/50 border border-blue-100 text-undipa-navy">
+                <button onclick="document.getElementById('notifDropdownDesktop').classList.toggle('hidden')" class="relative hover:text-blue-600 transition-colors duration-200 text-undipa-navy">
                     <span class="material-symbols-outlined">notifications</span>
                     <span id="desktopNotifCount" class="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full hidden border-2 border-white"></span>
                 </button>
@@ -331,12 +333,10 @@
                         <div class="p-4 text-center text-slate-500 text-sm">Tidak ada notifikasi</div>
                     </div>
                 </div>
-                <a href="{{ url('/settings') }}" class="hover:bg-blue-50 transition-colors p-2.5 rounded-full duration-200 border border-blue-100 text-undipa-navy">
+                <a href="{{ url('/settings') }}" class="hover:text-blue-600 transition-colors duration-200 text-undipa-navy">
                     <span class="material-symbols-outlined">settings</span>
                 </a>
-                <a href="{{ auth()->user()->role === 'admin' ? route('admin.announcements.index') : route('member.announcements.index') }}" class="hover:bg-blue-50 transition-colors p-2.5 rounded-full duration-200 border border-blue-100 text-undipa-navy flex items-center justify-center" title="Peraturan & Informasi">
-                    <span class="material-symbols-outlined">description</span>
-                </a>
+
                 <a href="{{ url('/profile') }}" class="hover:ring-4 ring-undipa-gold/30 transition-all rounded-full ml-1 cursor-pointer">
                     <img alt="User profile photo" class="w-11 h-11 rounded-full object-cover border-2 border-undipa-gold shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMS-Jw1uWJ4xxtA-LPZI9F2ZiRIt6PxceB1tsOBUzOs6V_ul5XGvq-cdLKPfuIWOT6uDGqYqOl6rp0YIof7WRWFx6HYgjtNAvFkj_AYU7LrYXCkGzx13NMi7ufRlWGXsvmCDzo8IXY6P7kN8AwNCZDHi3GSlSqvy20kLZekGjxbj2LiZoG7h10gJ1nV75gUVvGaVMfaLhL6nN0bqxx8XNRDPuviP-xffFsZS3r2TqTEm12O3XofACQ2JiHLttP0QJrvCRpS9SPupE"/>
                 </a>
@@ -373,10 +373,13 @@
                 <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' {{ request()->routeIs('member.announcements.*') ? '1' : '0' }};">campaign</span>
                 <span class="text-[9px] font-bold tracking-wide">Info</span>
             </a>
-            <a href="{{ url('/settings') }}" class="flex flex-col items-center gap-0.5 px-3 py-2 rounded-xl transition-all {{ request()->is('settings') ? 'nav-active-bottom' : 'nav-inactive-bottom' }}">
-                <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' {{ request()->is('settings') ? '1' : '0' }};">settings</span>
-                <span class="text-[9px] font-bold tracking-wide">Setelan</span>
-            </a>
+            <form method="POST" action="{{ route('logout') }}" class="m-0">
+                @csrf
+                <button type="submit" class="flex flex-col items-center gap-0.5 px-3 py-2 rounded-xl transition-all nav-inactive-bottom">
+                    <span class="material-symbols-outlined text-[22px]">logout</span>
+                    <span class="text-[9px] font-bold tracking-wide">Keluar</span>
+                </button>
+            </form>
         @else
             <a href="{{ url('/admin/dashboard') }}" class="flex flex-col items-center gap-0.5 px-3 py-2 rounded-xl transition-all {{ request()->is('admin/dashboard') ? 'nav-active-bottom' : 'nav-inactive-bottom' }}">
                 <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' {{ request()->is('admin/dashboard') ? '1' : '0' }};">dashboard</span>
@@ -394,10 +397,13 @@
                 <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' {{ request()->routeIs('admin.announcements.*') ? '1' : '0' }};">campaign</span>
                 <span class="text-[9px] font-bold tracking-wide">Info</span>
             </a>
-            <a href="{{ url('/settings') }}" class="flex flex-col items-center gap-0.5 px-3 py-2 rounded-xl transition-all {{ request()->is('settings') ? 'nav-active-bottom' : 'nav-inactive-bottom' }}">
-                <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' {{ request()->is('settings') ? '1' : '0' }};">settings</span>
-                <span class="text-[9px] font-bold tracking-wide">Setelan</span>
-            </a>
+            <form method="POST" action="{{ route('logout') }}" class="m-0">
+                @csrf
+                <button type="submit" class="flex flex-col items-center gap-0.5 px-3 py-2 rounded-xl transition-all nav-inactive-bottom">
+                    <span class="material-symbols-outlined text-[22px]">logout</span>
+                    <span class="text-[9px] font-bold tracking-wide">Keluar</span>
+                </button>
+            </form>
         @endif
     </nav>
     
