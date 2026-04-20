@@ -78,4 +78,40 @@ class AdminMemberController extends Controller
         $member->delete();
         return redirect()->route('admin.members.index')->with('success', 'Anggota berhasil dihapus.');
     }
+
+    public function exportCsv()
+    {
+        $fileName = 'direktori_anggota_padus_' . date('Y-m-d') . '.csv';
+        $members = User::where('role', 'member')->orderBy('name')->get();
+
+        $headers = array(
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$fileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        );
+
+        $columns = ['Nama Lengkap', 'STB/NIM', 'Email', 'Jenis Suara', 'Nomor Telepon'];
+
+        $callback = function() use($members, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($members as $member) {
+                $row = [
+                    $member->name,
+                    $member->nim,
+                    $member->email,
+                    $member->voice_part ?? '-',
+                    $member->phone ?? '-'
+                ];
+                fputcsv($file, $row);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }

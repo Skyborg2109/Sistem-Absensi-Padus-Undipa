@@ -44,9 +44,22 @@
                 </div>
                 @elseif(!$isCheckinAllowed)
                 <div class="text-center">
-                    <span class="material-symbols-outlined text-[64px] text-orange-500 mb-4">schedule</span>
-                    <h2 class="font-headline text-2xl font-bold text-on-surface">Dibatasi</h2>
-                    <p class="text-on-surface-variant text-sm mt-2">{{ $checkinStatusMsg }}</p>
+                    @if(isset($sessionExpired) && $sessionExpired)
+                        {{-- Sesi Sudah Selesai / Expired --}}
+                        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-50 mb-5 mx-auto">
+                            <span class="material-symbols-outlined text-[48px] text-red-400" style="font-variation-settings: 'FILL' 1;">event_busy</span>
+                        </div>
+                        <h2 class="font-headline text-2xl font-bold text-on-surface">Sesi Telah Selesai</h2>
+                        <p class="text-on-surface-variant text-sm mt-2 max-w-xs mx-auto">{{ $checkinStatusMsg }}</p>
+                        <p class="text-xs text-slate-400 mt-4">Jika Anda hadir namun belum sempat presensi, silakan hubungi admin untuk pencatatan manual.</p>
+                    @else
+                        {{-- Belum waktunya / jadwal di masa depan --}}
+                        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-orange-50 mb-5 mx-auto">
+                            <span class="material-symbols-outlined text-[48px] text-orange-400" style="font-variation-settings: 'FILL' 1;">schedule</span>
+                        </div>
+                        <h2 class="font-headline text-2xl font-bold text-on-surface">Presensi Belum Dibuka</h2>
+                        <p class="text-on-surface-variant text-sm mt-2 max-w-xs mx-auto">{{ $checkinStatusMsg }}</p>
+                    @endif
                 </div>
                 @else
                 <div class="text-center mb-8">
@@ -156,15 +169,22 @@
         </section>
         
         <!-- Check-in Status -->
-        <section class="bg-surface-container-low rounded-[1.5rem] p-6 text-center border border-slate-100">
+        <section class="rounded-[1.5rem] p-6 text-center border {{ isset($sessionExpired) && $sessionExpired && !$alreadyCheckedIn ? 'bg-red-50 border-red-100' : 'bg-surface-container-low border-slate-100' }}">
             <p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-2 font-bold text-slate-500 text-xs">Status Absen Anda</p>
             @if($alreadyCheckedIn)
             <div class="inline-flex items-center gap-2 {{ (isset($attendanceRecord) && $attendanceRecord->status === 'Terlambat') ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800' }} px-4 py-2 rounded-full font-medium shadow-sm">
                 <span class="material-symbols-outlined text-[18px]">{{ (isset($attendanceRecord) && $attendanceRecord->status === 'Terlambat') ? 'warning' : 'check_circle' }}</span>
                 Sudah Terisi ({{ isset($attendanceRecord) ? $attendanceRecord->status : 'Hadir' }})
             </div>
+            @elseif(isset($sessionExpired) && $sessionExpired)
+            {{-- Sesi sudah selesai, anggota tidak presensi --}}
+            <div class="inline-flex items-center gap-2 bg-red-100 text-red-700 px-4 py-2 rounded-full font-medium shadow-sm">
+                <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">event_busy</span>
+                Sesi Selesai
+            </div>
+            <p class="text-xs text-red-400 mt-3">Anda tidak melakukan presensi pada sesi ini.</p>
             @else
-            <div class="inline-flex items-center gap-2 bg-tertiary-fixed text-on-tertiary-fixed-variant px-4 py-2 rounded-full font-medium shadow-sm bg-orange-100 text-orange-800">
+            <div class="inline-flex items-center gap-2 bg-orange-100 text-orange-800 px-4 py-2 rounded-full font-medium shadow-sm">
                 <span class="material-symbols-outlined text-[18px]">hourglass_empty</span>
                 Belum Terisi
             </div>

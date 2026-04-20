@@ -24,10 +24,10 @@
             </select>
             <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
         </div>
-        <button class="bg-blue-950 text-white rounded-full px-6 py-3 font-['Plus_Jakarta_Sans'] font-semibold flex items-center gap-2 hover:bg-blue-900 transition-all shadow-sm text-sm">
-            <span class="material-symbols-outlined" data-icon="play_arrow">play_arrow</span>
-            Mulai Absensi
-        </button>
+        <a href="{{ route('admin.attendance.export') }}" class="bg-blue-950 text-white rounded-full px-6 py-3 font-['Plus_Jakarta_Sans'] font-semibold flex items-center gap-2 hover:bg-blue-900 transition-all shadow-sm text-sm">
+            <span class="material-symbols-outlined" data-icon="download">download</span>
+            Download Rekap (.csv)
+        </a>
     </div>
 </header>
 
@@ -40,22 +40,22 @@
     </div>
     <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-100 relative overflow-hidden">
         <div class="absolute w-1 h-full bg-green-500 left-0 top-0"></div>
-        <h3 class="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">Hadir</h3>
+        <h3 class="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">Hadir / Terlambat</h3>
         <p class="text-2xl font-['Plus_Jakarta_Sans'] font-bold text-slate-900">{{ $stats['present'] }} <span class="text-sm font-medium text-slate-500 ml-1">Ditandai</span></p>
     </div>
     <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-100 relative overflow-hidden">
         <div class="absolute w-1 h-full bg-amber-500 left-0 top-0"></div>
-        <h3 class="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">Tertunda / Izin / Alpha</h3>
-        <p class="text-2xl font-['Plus_Jakarta_Sans'] font-bold text-slate-900">{{ $stats['expected'] - $stats['present'] }} <span class="text-sm font-medium text-slate-500 ml-1">Tersisa</span></p>
+        <h3 class="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">Alpha / Tersisa</h3>
+        <p class="text-2xl font-['Plus_Jakarta_Sans'] font-bold text-slate-900">{{ $stats['alpha'] }} <span class="text-sm font-medium text-slate-500 ml-1">Anggota</span></p>
     </div>
 </div>
 
 <!-- Attendance List Canvas -->
 <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
     <div class="flex justify-between items-center mb-6 px-2">
-        <h3 class="text-lg font-['Plus_Jakarta_Sans'] font-bold text-slate-900">Bagian Soprano</h3>
+        <h3 class="text-lg font-['Plus_Jakarta_Sans'] font-bold text-slate-900">Daftar Kehadiran Vokal</h3>
         <div class="flex gap-2">
-            <button class="text-sm font-medium text-amber-600 hover:bg-amber-50 px-4 py-2 rounded-full transition-colors">Tandai Semua Hadir</button>
+            <span class="text-xs font-semibold text-slate-400 italic">Klik status untuk mengubah secara manual</span>
         </div>
     </div>
     <!-- List Header (Glassy) -->
@@ -82,6 +82,8 @@
                     <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-green-500 rounded-r-full hidden md:block"></div>
                     @elseif($status === 'Alpha')
                     <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-red-500 rounded-r-full hidden md:block"></div>
+                    @elseif($status === 'Terlambat')
+                    <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-amber-500 rounded-r-full hidden md:block"></div>
                     @elseif(in_array($status, ['Izin', 'Sakit']))
                     <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-amber-400 rounded-r-full hidden md:block"></div>
                     @else
@@ -103,15 +105,25 @@
                     <div class="md:col-span-2 text-sm text-slate-500 hidden md:block">
                         <span class="bg-slate-100 px-3 py-1 rounded-full text-xs font-medium">{{ $member->voice_part ?? 'Soprano 1' }}</span>
                     </div>
-                    <div class="md:col-span-5 w-full md:w-auto flex justify-end gap-2">
+                    <div class="md:col-span-5 w-full md:w-auto flex justify-end gap-1.5 overflow-x-auto pb-1 md:pb-0">
                         <form action="{{ route('admin.attendance.store') }}" method="POST">
                             @csrf
                             <input type="hidden" name="schedule_id" value="{{ $selectedSchedule->id }}">
                             <input type="hidden" name="user_id" value="{{ $member->id }}">
                             <input type="hidden" name="status" value="Hadir">
-                            <button class="px-4 py-2 rounded-full text-sm font-medium transition-colors flex items-center justify-center gap-1 {{ $status === 'Hadir' ? 'bg-green-50 text-green-700 border-transparent' : 'border border-slate-200 hover:bg-slate-50 text-slate-600' }}">
-                                <span class="material-symbols-outlined text-[18px]" data-icon="check_circle">check_circle</span>
-                                <span class="hidden md:inline">Hadir</span>
+                            <button class="px-3 py-1.5 rounded-full text-[11px] font-bold transition-colors flex items-center justify-center gap-1 {{ $status === 'Hadir' ? 'bg-green-100 text-green-800 border-transparent' : 'border border-slate-200 hover:bg-slate-50 text-slate-600' }}">
+                                <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                                Hadir
+                            </button>
+                        </form>
+                        <form action="{{ route('admin.attendance.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="schedule_id" value="{{ $selectedSchedule->id }}">
+                            <input type="hidden" name="user_id" value="{{ $member->id }}">
+                            <input type="hidden" name="status" value="Terlambat">
+                            <button class="px-3 py-1.5 rounded-full text-[11px] font-bold transition-colors flex items-center justify-center gap-1 {{ $status === 'Terlambat' ? 'bg-amber-100 text-amber-800 border-transparent' : 'border border-slate-200 hover:bg-slate-50 text-slate-600' }}">
+                                <span class="material-symbols-outlined text-[16px]">schedule</span>
+                                Telat
                             </button>
                         </form>
                         <form action="{{ route('admin.attendance.store') }}" method="POST">
@@ -119,9 +131,9 @@
                             <input type="hidden" name="schedule_id" value="{{ $selectedSchedule->id }}">
                             <input type="hidden" name="user_id" value="{{ $member->id }}">
                             <input type="hidden" name="status" value="Izin">
-                            <button class="px-4 py-2 rounded-full text-sm font-medium transition-colors flex items-center justify-center gap-1 {{ in_array($status, ['Izin', 'Sakit']) ? 'bg-amber-100 text-amber-800 border-transparent' : 'border border-slate-200 hover:bg-slate-50 text-slate-600' }}">
-                                <span class="material-symbols-outlined text-[18px]" data-icon="pending_actions">pending_actions</span>
-                                <span class="hidden md:inline">Izin</span>
+                            <button class="px-3 py-1.5 rounded-full text-[11px] font-bold transition-colors flex items-center justify-center gap-1 {{ in_array($status, ['Izin', 'Sakit']) ? 'bg-orange-50 text-orange-700 border-transparent' : 'border border-slate-200 hover:bg-slate-50 text-slate-600' }}">
+                                <span class="material-symbols-outlined text-[16px]">pending_actions</span>
+                                Izin
                             </button>
                         </form>
                         <form action="{{ route('admin.attendance.store') }}" method="POST">
@@ -129,9 +141,9 @@
                             <input type="hidden" name="schedule_id" value="{{ $selectedSchedule->id }}">
                             <input type="hidden" name="user_id" value="{{ $member->id }}">
                             <input type="hidden" name="status" value="Alpha">
-                            <button class="px-4 py-2 rounded-full text-sm font-medium transition-colors flex items-center justify-center gap-1 {{ $status === 'Alpha' ? 'bg-red-50 text-red-700 border-transparent' : 'border border-slate-200 hover:bg-slate-50 text-slate-600' }}">
-                                <span class="material-symbols-outlined text-[18px]" data-icon="cancel">cancel</span>
-                                <span class="hidden md:inline">Alpha</span>
+                            <button class="px-3 py-1.5 rounded-full text-[11px] font-bold transition-colors flex items-center justify-center gap-1 {{ $status === 'Alpha' ? 'bg-red-50 text-red-700 border-transparent' : 'border border-slate-200 hover:bg-slate-50 text-slate-600' }}">
+                                <span class="material-symbols-outlined text-[16px]">cancel</span>
+                                Alpha
                             </button>
                         </form>
                         @if($status)
@@ -140,8 +152,8 @@
                             <input type="hidden" name="schedule_id" value="{{ $selectedSchedule->id }}">
                             <input type="hidden" name="user_id" value="{{ $member->id }}">
                             <input type="hidden" name="status" value="Belum Absen">
-                            <button class="px-3 py-2 rounded-full text-sm font-medium transition-colors flex items-center justify-center gap-1 border border-slate-200 hover:bg-slate-50 text-slate-400 group relative">
-                                <span class="material-symbols-outlined text-[18px]" data-icon="replay">replay</span>
+                            <button class="px-2 py-1.5 rounded-full transition-colors flex items-center justify-center border border-slate-200 hover:bg-slate-50 text-slate-400">
+                                <span class="material-symbols-outlined text-[16px]">replay</span>
                             </button>
                         </form>
                         @endif

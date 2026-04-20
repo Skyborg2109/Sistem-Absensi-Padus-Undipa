@@ -4,14 +4,15 @@
 
 @section('content')
 <!-- Welcome Header -->
-<div class="mb-12 max-w-5xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="mb-10 max-w-5xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6">
     <div>
-        <h2 class="font-headline text-display-lg font-bold text-on-surface tracking-tight leading-tight text-4xl">Selamat datang,<br/>{{ $user->name }}.</h2>
-        <p class="font-body text-body-md text-on-surface-variant mt-2 max-w-md">Kehadiran vokal Anda membentuk harmoni. Tinjau jadwal Anda yang akan datang dan partisipasi terbaru.</p>
+        <p class="text-xs font-bold text-undipa-gold uppercase tracking-[0.2em] mb-1">Dashboard Anggota</p>
+        <h2 class="font-headline font-bold text-undipa-navy tracking-tight leading-tight text-4xl">Selamat datang,<br/>{{ $user->name }}.</h2>
+        <p class="font-body text-on-surface-variant mt-2 max-w-md">Kehadiran vokal Anda membentuk harmoni. Tinjau jadwal Anda yang akan datang dan partisipasi terbaru.</p>
     </div>
-    <!-- Mobile Check-in CTA (Visible only on mobile since sidebar has it on web) -->
-    <a href="{{ url('/member/attendance/check-in') }}" class="md:hidden w-full sm:w-auto gradient-cta text-on-primary rounded-full py-3 px-6 flex items-center justify-center gap-2 font-headline font-semibold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_32px_rgba(0,10,30,0.15)] bg-gradient-to-br from-primary to-primary-container">
-        <span class="material-symbols-outlined text-tertiary-fixed">how_to_reg</span>
+    <!-- Mobile Check-in CTA -->
+    <a href="{{ url('/member/attendance/check-in') }}" class="md:hidden w-full sm:w-auto undipa-cta-btn rounded-full py-3 px-6 flex items-center justify-center gap-2 font-headline font-bold text-sm shadow-xl">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">how_to_reg</span>
         Check-in Sekarang
     </a>
 </div>
@@ -47,44 +48,44 @@
 <!-- Bento Grid Layout -->
 <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
     <!-- Next Rehearsal Card (Spans 8 cols) -->
-    <div class="md:col-span-8 bg-surface-container-lowest rounded-xl p-8 relative overflow-hidden flex flex-col justify-between">
+    <div class="md:col-span-8 bg-undipa-navy rounded-2xl p-8 relative overflow-hidden flex flex-col justify-between shadow-xl shadow-undipa-navy/30">
         <!-- Decor element -->
-        <div class="absolute -right-20 -top-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute left-0 top-0 bottom-0 w-1 bg-tertiary-container"></div>
+        <div class="absolute -right-20 -top-20 w-64 h-64 bg-undipa-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute left-0 top-0 bottom-0 w-1.5 gold-accent-bar rounded-l-2xl"></div>
         
         @if($nextSchedule)
         <div>
-            <div class="flex items-center gap-2 text-on-surface-variant mb-4 font-label text-sm uppercase tracking-wider font-semibold">
-                <span class="material-symbols-outlined text-tertiary">schedule</span>
+            <div class="flex items-center gap-2 text-undipa-gold mb-4 font-label text-xs uppercase tracking-[0.15em] font-bold">
+                <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">schedule</span>
                 Latihan Berikutnya
             </div>
-            <h3 class="font-headline text-headline-md font-bold text-on-surface mb-2 text-2xl">{{ $nextSchedule->title }}</h3>
-            <p class="font-body text-body-md text-on-surface-variant mb-6">{{ $nextSchedule->location ?? 'Belum ditentukan' }}</p>
+            <h3 class="font-headline font-bold text-white mb-2 text-2xl">{{ $nextSchedule->title }}</h3>
+            <p class="font-body text-blue-200 mb-6">{{ $nextSchedule->location ?? 'Belum ditentukan' }}</p>
         </div>
         
         <div class="flex flex-wrap items-end justify-between gap-4 mt-8">
-            <div class="flex gap-4">
-                <div class="bg-surface-container-low px-4 py-3 rounded-lg text-center min-w-[4.5rem]">
-                    <span class="block font-headline font-bold text-title-lg text-primary">{{ \Carbon\Carbon::parse($nextSchedule->date)->format('d M') }}</span>
-                    <span class="block font-label text-xs text-on-surface-variant uppercase mt-1">TGL</span>
+            <div class="flex gap-3">
+                <div class="bg-white/10 border border-undipa-gold/20 px-4 py-3 rounded-xl text-center min-w-[4.5rem]">
+                    <span class="block font-headline font-extrabold text-undipa-gold">{{ \Carbon\Carbon::parse($nextSchedule->date)->format('d M') }}</span>
+                    <span class="block font-label text-[10px] text-blue-200 uppercase mt-1 tracking-wider">TGL</span>
                 </div>
-                <div class="bg-surface-container-low px-4 py-3 rounded-lg text-center min-w-[4.5rem]">
-                    <span class="block font-headline font-bold text-title-lg text-primary">{{ \Carbon\Carbon::parse($nextSchedule->time)->format('H:i') }}</span>
-                    <span class="block font-label text-xs text-on-surface-variant uppercase mt-1">WAKTU</span>
+                <div class="bg-white/10 border border-undipa-gold/20 px-4 py-3 rounded-xl text-center min-w-[4.5rem]">
+                    <span class="block font-headline font-extrabold text-undipa-gold">{{ \Carbon\Carbon::parse($nextSchedule->time)->format('H:i') }}</span>
+                    <span class="block font-label text-[10px] text-blue-200 uppercase mt-1 tracking-wider">WAKTU</span>
                 </div>
             </div>
             <div class="flex flex-col items-end">
-                <span class="font-label text-sm text-on-surface-variant mb-1">Status Kehadiran</span>
+                <span class="font-label text-xs text-blue-200 mb-1.5 uppercase tracking-wider">Status Kehadiran</span>
                 @php
                     $presence = \App\Models\Attendance::where('user_id', auth()->id())->where('schedule_id', $nextSchedule->id)->first();
                 @endphp
                 @if($presence)
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary text-on-primary gap-1">
-                        <span class="material-symbols-outlined text-[14px]">check_circle</span>
+                    <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold undipa-cta-btn gap-1.5">
+                        <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
                         {{ $presence->status }}
                     </span>
                 @else
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-tertiary-fixed text-on-tertiary-fixed-variant gap-1">
+                    <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold bg-white/15 text-white border border-white/20 gap-1.5">
                         <span class="material-symbols-outlined text-[14px]">pending_actions</span>
                         Belum Presensi
                     </span>
@@ -92,42 +93,69 @@
             </div>
         </div>
         @else
-        <div class="flex flex-col items-center justify-center h-full opacity-50 py-10">
-            <span class="material-symbols-outlined text-5xl mb-4">event_busy</span>
-            <p class="font-headline font-bold text-xl">Tidak ada jadwal latihan</p>
-            <p class="font-body text-sm mt-2">Duduk kencangkan sabuk pengaman, admin akan segera membuatnya.</p>
+        <div class="flex flex-col items-center justify-center h-full opacity-60 py-10">
+            <span class="material-symbols-outlined text-5xl mb-4 text-undipa-gold">event_busy</span>
+            <p class="font-headline font-bold text-xl text-white">Tidak ada jadwal latihan</p>
+            <p class="font-body text-sm mt-2 text-blue-200">Admin akan segera membuatnya.</p>
         </div>
         @endif
     </div>
     
     <!-- Personal Stats Card (Spans 4 cols) -->
-    <div class="md:col-span-4 bg-surface-container-lowest rounded-xl p-8 flex flex-col justify-between shadow-sm border border-slate-100">
+    <div class="md:col-span-4 bg-white rounded-2xl p-8 flex flex-col justify-between stat-card-glow border border-blue-50">
         <div>
-            <div class="flex items-center gap-2 text-on-surface-variant mb-4 font-label text-sm uppercase tracking-wider font-semibold">
-                <span class="material-symbols-outlined text-primary">analytics</span>
-                Tingkat Kehadiran
+            <div class="flex items-center gap-2 mb-4 font-label text-xs uppercase tracking-[0.15em] font-bold">
+                <span class="material-symbols-outlined text-undipa-gold text-[18px]" style="font-variation-settings: 'FILL' 1;">analytics</span>
+                <span class="text-undipa-navy">Tingkat Kehadiran</span>
             </div>
         </div>
-        <div class="flex-1 flex flex-col justify-center items-center py-6">
-            <!-- Radial Progress visual representation -->
+        <div class="flex-1 flex flex-col justify-center items-center py-4">
+            <!-- Radial Progress with UNDIPA colors -->
             <div class="relative w-32 h-32 flex items-center justify-center">
+                @php
+                    $dasharray = 282.7;
+                    $dashoffset = $dasharray - ($dasharray * ($stats['percentage'] / 100));
+                @endphp
                 <svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
-                    <circle class="text-surface-container-high" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-width="8"></circle>
-                    <circle class="text-primary" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-dasharray="282.7" stroke-dashoffset="33.9" stroke-width="8"></circle>
+                    <circle cx="50" cy="50" fill="none" r="45" stroke="#dce2f0" stroke-width="8"></circle>
+                    <circle cx="50" cy="50" fill="none" r="45" stroke="#C8A84B" stroke-dasharray="{{ $dasharray }}" stroke-dashoffset="{{ $dashoffset }}" stroke-width="8" stroke-linecap="round" class="transition-all duration-1000"></circle>
+                    <circle cx="50" cy="50" fill="none" r="45" stroke="#003087" stroke-dasharray="282.7" stroke-dashoffset="66" stroke-width="3"></circle>
                 </svg>
                 <div class="absolute inset-0 flex flex-col items-center justify-center">
-                    <span class="font-headline font-bold text-3xl text-primary">88%</span>
+                    <span class="font-headline font-extrabold text-3xl text-undipa-navy">{{ $stats['percentage'] }}%</span>
+                    <span class="text-[10px] font-bold text-undipa-gold uppercase tracking-wider">Hadir</span>
                 </div>
             </div>
-            <p class="font-body text-sm text-on-surface-variant mt-4 text-center">Status baik. Kejar ke 90% untuk dapat seleksi solo.</p>
+            <p class="font-body text-xs text-on-surface-variant mt-4 text-center">
+                @if($stats['percentage'] >= 90)
+                    Luar biasa! Pertahankan performa vokal Anda.
+                @elseif($stats['percentage'] >= 75)
+                    Status baik. Sedikit lagi menuju kehadiran prima.
+                @else
+                    Tingkatkan kehadiran Anda untuk sesi berikutnya.
+                @endif
+            </p>
+            <div class="mt-4 w-full flex justify-center gap-4">
+                <div class="flex items-center gap-1">
+                    <div class="w-2.5 h-2.5 rounded-full bg-undipa-gold"></div>
+                    <span class="text-[10px] text-undipa-navy font-bold">Hadir</span>
+                </div>
+                <div class="flex items-center gap-1">
+                    <div class="w-2.5 h-2.5 rounded-full bg-undipa-navy"></div>
+                    <span class="text-[10px] text-on-surface-variant font-medium">Target</span>
+                </div>
+            </div>
         </div>
     </div>
     
     <!-- Recent Activity (Spans 12 cols) -->
-    <div class="md:col-span-12 bg-surface-container-lowest rounded-xl p-8 mt-2 shadow-sm border border-slate-100">
+    <div class="md:col-span-12 bg-white rounded-2xl p-8 mt-2 stat-card-glow border border-blue-50">
         <div class="flex items-center justify-between mb-6">
-            <h3 class="font-headline text-xl font-bold text-on-surface">Latihan Terkini</h3>
-            <a class="text-sm font-semibold text-tertiary hover:text-tertiary-container transition-colors" href="{{ route('member.attendance.history') }}">Lihat Semua Riwayat</a>
+            <div class="flex items-center gap-3">
+                <div class="w-1 h-6 gold-accent-bar rounded-full"></div>
+                <h3 class="font-headline text-xl font-bold text-undipa-navy">Latihan Terkini</h3>
+            </div>
+            <a class="text-sm font-bold text-undipa-navy hover:text-undipa-gold transition-colors border border-undipa-navy/20 px-3 py-1.5 rounded-full hover:bg-undipa-navy hover:text-white" href="{{ route('member.attendance.history') }}">Lihat Semua →</a>
         </div>
         <div class="flex flex-col gap-3">
             @forelse($recentAttendances as $attendance)

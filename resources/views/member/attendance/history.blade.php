@@ -24,10 +24,15 @@
             </div>
             <div class="relative z-10 mt-6">
                 <div class="flex items-baseline gap-1">
-                    <span class="font-headline text-7xl md:text-[5.5rem] font-black text-primary tracking-tighter leading-none">{{ count($attendances) > 0 ? round(($attendances->where('status', 'Hadir')->count() / count($attendances)) * 100) : 0 }}</span>
+                    @php
+                        $hadirCount = $attendances->whereIn('status', ['Hadir', 'Terlambat'])->count();
+                        $totalCount = count($attendances);
+                        $percentage = $totalCount > 0 ? round(($hadirCount / $totalCount) * 100) : 0;
+                    @endphp
+                    <span class="font-headline text-7xl md:text-[5.5rem] font-black text-primary tracking-tighter leading-none">{{ $percentage }}</span>
                     <span class="font-headline text-3xl text-on-surface-variant font-bold">%</span>
                 </div>
-                <p class="text-sm font-body text-on-surface-variant mt-2 font-medium">Tingkat Kehadiran • {{ $attendances->where('status', 'Hadir')->count() }} dari {{ count($attendances) }} sesi</p>
+                <p class="text-sm font-body text-on-surface-variant mt-2 font-medium">Tingkat Kehadiran • {{ $hadirCount }} dari {{ $totalCount }} sesi</p>
             </div>
             <!-- Ambient Texture -->
             <div class="absolute right-[-10%] bottom-[-20%] w-[60%] h-[120%] bg-gradient-to-br from-primary-fixed/30 to-transparent rounded-full blur-[40px] pointer-events-none"></div>
@@ -38,7 +43,7 @@
             <!-- Present Card -->
             <div class="bg-surface-container-low rounded-[1.5rem] p-6 flex-1 flex flex-col justify-center relative overflow-hidden shadow-sm border border-slate-100">
                 <p class="text-on-surface-variant font-headline text-xs font-bold uppercase tracking-wider mb-2">Total Hadir</p>
-                <p class="font-headline text-4xl font-extrabold text-primary">{{ $attendances->where('status', 'Hadir')->count() }}</p>
+                <p class="font-headline text-4xl font-extrabold text-primary">{{ $attendances->whereIn('status', ['Hadir', 'Terlambat'])->count() }}</p>
                 <span class="material-symbols-outlined absolute right-4 bottom-4 text-[48px] text-surface-container-highest/50">how_to_reg</span>
             </div>
             <!-- Split Card for Exceptions -->
@@ -81,6 +86,8 @@
                 <div class="grid grid-cols-12 gap-4 px-6 py-5 items-center bg-surface hover:bg-surface-container-low transition-colors rounded-xl group cursor-default relative overflow-hidden">
                     @if($attendance->status === 'Alpha')
                     <div class="absolute left-0 top-0 bottom-0 w-1 bg-error-container"></div>
+                    @elseif($attendance->status === 'Terlambat')
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-400 opacity-70"></div>
                     @elseif(in_array($attendance->status, ['Izin', 'Sakit']))
                     <div class="absolute left-0 top-0 bottom-0 w-1 bg-tertiary-fixed opacity-50"></div>
                     @else
@@ -96,15 +103,19 @@
                     </div>
                     <div class="col-span-3 flex justify-end">
                         @if($attendance->status === 'Hadir')
-                        <span class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-surface-container text-primary font-headline text-xs font-bold tracking-wide uppercase bg-green-50 text-green-700">
+                        <span class="inline-flex items-center justify-center px-4 py-2 rounded-lg font-headline text-xs font-bold tracking-wide uppercase bg-green-50 text-green-700">
                             Hadir
                         </span>
+                        @elseif($attendance->status === 'Terlambat')
+                        <span class="inline-flex items-center justify-center px-4 py-2 rounded-lg font-headline text-xs font-bold tracking-wide uppercase bg-amber-50 text-amber-700 border border-amber-100">
+                            Terlambat
+                        </span>
                         @elseif(in_array($attendance->status, ['Izin', 'Sakit']))
-                        <span class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed-variant font-headline text-xs font-bold tracking-wide uppercase bg-orange-100 text-orange-700">
+                        <span class="inline-flex items-center justify-center px-4 py-2 rounded-lg font-headline text-xs font-bold tracking-wide uppercase bg-orange-100 text-orange-700">
                             {{ $attendance->status }}
                         </span>
                         @else
-                        <span class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-error-container text-on-error-container font-headline text-xs font-bold tracking-wide uppercase bg-red-100 text-red-700">
+                        <span class="inline-flex items-center justify-center px-4 py-2 rounded-lg font-headline text-xs font-bold tracking-wide uppercase bg-red-100 text-red-700">
                             {{ $attendance->status }}
                         </span>
                         @endif

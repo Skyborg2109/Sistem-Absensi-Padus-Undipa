@@ -7,6 +7,11 @@ use App\Http\Controllers\AdminAnnouncementController;
 use App\Http\Controllers\MemberAnnouncementController;
 
 Route::get('/', function () {
+    if (auth()->check()) {
+        return auth()->user()->role === 'admin' 
+            ? redirect()->route('admin.dashboard') 
+            : redirect()->route('member.dashboard');
+    }
     return redirect('/login');
 });
 
@@ -63,6 +68,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/schedules', [\App\Http\Controllers\AdminScheduleController::class, 'store'])->name('schedules.store');
         Route::put('/schedules/{schedule}', [\App\Http\Controllers\AdminScheduleController::class, 'update'])->name('schedules.update');
         Route::delete('/schedules/{schedule}', [\App\Http\Controllers\AdminScheduleController::class, 'destroy'])->name('schedules.destroy');
+
+        Route::get('/members/export', [\App\Http\Controllers\AdminMemberController::class, 'exportCsv'])->name('members.export');
+        Route::delete('/announcements/{announcement}/attachment', [\App\Http\Controllers\AdminAnnouncementController::class, 'deleteAttachment'])->name('announcements.deleteAttachment');
+
         
         // Example routes for future post/put actions
         // Route::post('/schedules', [AdminController::class, 'storeSchedule']);
@@ -74,13 +83,31 @@ Route::middleware('auth')->group(function () {
     // Member Routes
     Route::middleware('role:member')->prefix('member')->name('member.')->group(function () {
         Route::get('/dashboard', function () {
+            // Auto-expire jadwal aktif yang sudah lewat batas presensi
+            \App\Models\Schedule::where('status', 'active')->each(function ($s) {
+                if ($s->isExpired()) $s->update(['status' => 'completed']);
+            });
+
+            $user = auth()->user();
             $nextSchedule = \App\Models\Schedule::where('status', 'active')->orderBy('date')->first();
             $latestAnnouncements = \App\Models\Announcement::where('is_active', true)->latest()->take(2)->get();
+            
+            // Statistics for Dashboard
+            $allAttendances = $user->attendances;
+            $hadirCount = $allAttendances->whereIn('status', ['Hadir', 'Terlambat'])->count();
+            $totalSesi = $allAttendances->count();
+            $attendanceRate = $totalSesi > 0 ? round(($hadirCount / $totalSesi) * 100) : 0;
+
             return view('member.dashboard', [
-                'user' => auth()->user(),
+                'user' => $user,
                 'nextSchedule' => $nextSchedule,
-                'recentAttendances' => auth()->user()->attendances()->with('schedule')->take(3)->get(),
-                'latestAnnouncements' => $latestAnnouncements
+                'recentAttendances' => $user->attendances()->with('schedule')->take(3)->get(),
+                'latestAnnouncements' => $latestAnnouncements,
+                'stats' => [
+                    'hadir_count' => $hadirCount,
+                    'total_sesi' => $totalSesi,
+                    'percentage' => $attendanceRate
+                ]
             ]);
         })->name('dashboard');
 
@@ -91,42 +118,61 @@ Route::middleware('auth')->group(function () {
         })->name('attendance.history');
 
         Route::get('/attendance/check-in', function () {
-            $activeSchedule = \App\Models\Schedule::where('status', 'active')->first();
+            // Cari jadwal hari ini untuk member
+            $todaySchedule = \App\Models\Schedule::whereDate('date', \Carbon\Carbon::today())->first();
+            
+            // Jika tidak ada jadwal hari ini, cari yang statusnya 'active' (mungkin jadwal masa depan yang diaktifkan manual)
+            $schedule = $todaySchedule ?? \App\Models\Schedule::where('status', 'active')->orderBy('date')->first();
+
             $alreadyCheckedIn = false;
             $isCheckinAllowed = false;
             $checkinStatusMsg = '';
             $attendanceRecord = null;
+            $sessionExpired = false;
             
-            if ($activeSchedule) {
+            if ($schedule) {
+                // Update status ke completed jika expired
+                if ($schedule->status === 'active' && $schedule->isExpired()) {
+                    $schedule->update(['status' => 'completed']);
+                }
+
                 $attendanceRecord = \App\Models\Attendance::where('user_id', auth()->id())
-                    ->where('schedule_id', $activeSchedule->id)
+                    ->where('schedule_id', $schedule->id)
                     ->first();
                 $alreadyCheckedIn = $attendanceRecord ? true : false;
                     
                 $now = \Carbon\Carbon::now();
-                $scheduleDate = \Carbon\Carbon::parse($activeSchedule->date)->startOfDay();
-                $startTime = \Carbon\Carbon::parse($activeSchedule->date . ' ' . $activeSchedule->time);
-                $endTime = $activeSchedule->end_time ? \Carbon\Carbon::parse($activeSchedule->date . ' ' . $activeSchedule->end_time) : null;
+                $scheduleDate = \Carbon\Carbon::parse($schedule->date)->startOfDay();
+                $startTime = \Carbon\Carbon::parse($schedule->date . ' ' . $schedule->time);
+                $endTime = $schedule->end_time
+                    ? \Carbon\Carbon::parse($schedule->date . ' ' . $schedule->end_time)
+                    : null;
                 
                 if ($now->isBefore($scheduleDate)) {
                     $checkinStatusMsg = 'Presensi belum dibuka. Jadwal latihan pada ' . $scheduleDate->format('d M Y') . ' jam ' . $startTime->format('H:i') . ' WITA.';
+                } elseif ($endTime && $now->isAfter($endTime)) {
+                    $sessionExpired = true;
+                    $checkinStatusMsg = 'Sesi presensi telah ditutup pada ' . $endTime->format('H:i') . ' WITA. Hubungi admin jika ada kendala.';
                 } elseif ($now->isAfter($scheduleDate->copy()->endOfDay())) {
-                    $checkinStatusMsg = 'Waktu presensi sudah berlalu.';
+                    $sessionExpired = true;
+                    $checkinStatusMsg = 'Sesi latihan pada ' . $scheduleDate->format('d M Y') . ' telah selesai.';
                 } elseif ($now->isBefore($startTime)) {
                     $checkinStatusMsg = 'Presensi belum dibuka. Kembali pada jam ' . $startTime->format('H:i') . ' WITA.';
-                } elseif ($endTime && $now->isAfter($endTime)) {
-                    $checkinStatusMsg = 'Waktu presensi selesai pada ' . $endTime->format('H:i') . ' WITA.';
+                } elseif ($schedule->status === 'completed') {
+                    $sessionExpired = true;
+                    $checkinStatusMsg = 'Sesi latihan ini telah ditandai selesai oleh admin.';
                 } else {
                     $isCheckinAllowed = true;
                 }
             }
 
             return view('member.attendance.check_in', [
-                'schedule' => $activeSchedule,
+                'schedule' => $schedule,
                 'alreadyCheckedIn' => $alreadyCheckedIn,
                 'attendanceRecord' => $attendanceRecord,
                 'isCheckinAllowed' => $isCheckinAllowed,
-                'checkinStatusMsg' => $checkinStatusMsg
+                'checkinStatusMsg' => $checkinStatusMsg,
+                'sessionExpired' => $sessionExpired,
             ]);
         })->name('attendance.checkin');
         

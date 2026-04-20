@@ -83,4 +83,17 @@ class AdminAnnouncementController extends Controller
 
         return redirect()->route('admin.announcements.index')->with('success', 'Data berhasil dihapus.');
     }
+
+    public function deleteAttachment(Announcement $announcement)
+    {
+        if ($announcement->attachment_path) {
+            Storage::disk('public')->delete($announcement->attachment_path);
+            $announcement->update([
+                'attachment_path' => null,
+                'attachment_name' => null
+            ]);
+            return redirect()->back()->with('success', 'File terpasang berhasil dihapus.');
+        }
+        return redirect()->back()->with('error', 'Tidak ada file untuk dihapus.');
+    }
 }

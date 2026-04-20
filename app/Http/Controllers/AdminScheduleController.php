@@ -9,6 +9,13 @@ class AdminScheduleController extends Controller
 {
     public function index()
     {
+        // Otomatis tandai jadwal yang sudah melewati batas presensi sebagai 'completed'
+        \App\Models\Schedule::where('status', 'active')->each(function ($schedule) {
+            if ($schedule->isExpired()) {
+                $schedule->update(['status' => 'completed']);
+            }
+        });
+
         $schedules = Schedule::orderBy('date', 'desc')->orderBy('time', 'desc')->get();
         return view('admin.schedules.index', compact('schedules'));
     }

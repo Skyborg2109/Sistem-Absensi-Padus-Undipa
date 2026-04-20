@@ -56,11 +56,22 @@
             <div class="mb-6">
                 <label class="block text-sm font-bold text-slate-700 mb-2">Lampiran File (Opsional)</label>
                 @if($announcement->attachment_name)
-                    <div class="mb-3 flex items-center gap-2 p-3 bg-blue-50 text-blue-700 rounded-lg border border-blue-100 text-sm">
-                        <span class="material-symbols-outlined">attach_file</span>
-                        <span>File Terpasang: <strong>{{ $announcement->attachment_name }}</strong></span>
+                    <div class="mb-3 flex items-center justify-between p-3 bg-blue-50 text-blue-700 rounded-lg border border-blue-100 text-sm">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined">attach_file</span>
+                            <span>File Terpasang: <strong>{{ $announcement->attachment_name }}</strong></span>
+                        </div>
+                        <button type="button" onclick="if(confirm('Hapus lampiran ini?')) { document.getElementById('delete-attachment-form').submit(); }" class="flex items-center gap-1 text-red-500 hover:text-red-700 font-bold transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                            Hapus File
+                        </button>
                     </div>
                 @endif
+                
+                <form id="delete-attachment-form" action="{{ route('admin.announcements.deleteAttachment', $announcement->id) }}" method="POST" class="hidden">
+                    @csrf
+                    @method('DELETE')
+                </form>
                 <div class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer relative" id="fileUploadContainer">
                     <input type="file" name="attachment" id="attachment" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept=".pdf,.doc,.docx">
                     <span class="material-symbols-outlined text-4xl text-slate-400 mb-2">upload_file</span>

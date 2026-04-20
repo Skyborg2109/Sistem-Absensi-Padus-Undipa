@@ -31,9 +31,9 @@ class AdminAttendanceController extends Controller
 
         $stats = [
             'expected' => collect($members)->count(),
-            'present' => $attendances->where('status', 'Hadir')->count(),
+            'present' => $attendances->whereIn('status', ['Hadir', 'Terlambat'])->count(),
             'excused' => $attendances->whereIn('status', ['Izin', 'Sakit'])->count(),
-            'alpha' => collect($members)->count() - $attendances->where('status', 'Hadir')->count() - $attendances->whereIn('status', ['Izin', 'Sakit'])->count(), // Not marked or marked Alpha
+            'alpha' => collect($members)->count() - $attendances->whereIn('status', ['Hadir', 'Terlambat', 'Izin', 'Sakit'])->count(),
         ];
 
         return view('admin.attendance.index', compact('schedules', 'selectedSchedule', 'members', 'attendances', 'stats'));
@@ -44,7 +44,7 @@ class AdminAttendanceController extends Controller
         $request->validate([
             'schedule_id' => 'required|exists:schedules,id',
             'user_id' => 'required|exists:users,id',
-            'status' => 'required|in:Hadir,Izin,Sakit,Alpha,Belum Absen',
+            'status' => 'required|in:Hadir,Terlambat,Izin,Sakit,Alpha,Belum Absen',
         ]);
 
         if ($request->status === 'Belum Absen') {

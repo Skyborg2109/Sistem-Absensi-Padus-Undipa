@@ -10,10 +10,16 @@
         <p class="font-body text-on-surface-variant text-base">Kelola daftar tim dan penugasan bagian.</p>
     </div>
     <!-- Conductor Action -->
-    <button onclick="document.getElementById('createMemberModal').classList.remove('hidden')" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-semibold text-sm tracking-wide shadow-[0_16px_32px_rgba(0,10,30,0.06)] hover:shadow-[0_8px_24px_rgba(0,10,30,0.1)] transition-shadow duration-300 self-start md:self-end">
-        <span class="material-symbols-outlined text-base">add</span>
-        Tambah Anggota
-    </button>
+    <div class="flex gap-3 self-start md:self-end items-center">
+        <a href="{{ route('admin.members.export') }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-full border-2 border-primary text-primary font-headline font-bold text-sm tracking-wide hover:bg-primary hover:text-white transition-all duration-300">
+            <span class="material-symbols-outlined text-base">download</span>
+            Download Direktori
+        </a>
+        <button onclick="document.getElementById('createMemberModal').classList.remove('hidden')" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-semibold text-sm tracking-wide shadow-[0_16px_32px_rgba(0,10,30,0.06)] hover:shadow-[0_8px_24px_rgba(0,10,30,0.1)] transition-shadow duration-300">
+            <span class="material-symbols-outlined text-base">add</span>
+            Tambah Anggota
+        </button>
+    </div>
 </div>
 
 @if(session('success'))
