@@ -269,7 +269,8 @@ Route::middleware('auth')->group(function () {
                     'notes' => $request->notes,
                     'image_path' => $imagePath,
                     'latitude' => $request->latitude,
-                    'longitude' => $request->longitude
+                    'longitude' => $request->longitude,
+                    'location_name' => $request->location_name
                 ]
             );
             

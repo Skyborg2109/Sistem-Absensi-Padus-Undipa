@@ -147,6 +147,7 @@
                         <input type="hidden" name="image" id="final-image">
                         <input type="hidden" name="latitude" id="final-lat">
                         <input type="hidden" name="longitude" id="final-lng">
+                        <input type="hidden" name="location_name" id="final-location-name">
                         
                         <button type="submit" id="submit-presensi" disabled class="w-full bg-slate-200 text-slate-500 rounded-2xl py-4 font-headline font-black text-lg transition-all shadow-lg shadow-slate-100 flex items-center justify-center gap-2">
                             Absen Sekarang
@@ -264,6 +265,7 @@
         const finalImageInput = document.getElementById('final-image');
         const finalLatInput = document.getElementById('final-lat');
         const finalLngInput = document.getElementById('final-lng');
+        const finalLocationInput = document.getElementById('final-location-name');
         const attendanceForm = document.getElementById('attendance-main-form');
 
         let stream;
@@ -315,6 +317,7 @@
                         const data = await response.json();
                         const address = data.display_name.split(',').slice(0, 3).join(',');
                         locationText.innerText = address || `Terdeteksi (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+                        finalLocationInput.value = address || `Terdeteksi (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
                     } catch (e) {
                         locationText.innerText = `Terdeteksi (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
                     }

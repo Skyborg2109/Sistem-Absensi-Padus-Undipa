@@ -128,6 +128,12 @@
                                             </a>
                                         @endif
                                     </div>
+                                    @if($attendance->location_name)
+                                        <p class="text-[9px] text-slate-400 mt-1 flex items-center gap-1 leading-tight">
+                                            <span class="material-symbols-outlined text-[11px] shrink-0">place</span>
+                                            <span class="line-clamp-1">{{ $attendance->location_name }}</span>
+                                        </p>
+                                    @endif
                                 @endif
                             </div>
                         </div>
