@@ -99,7 +99,23 @@
                     </div>
                     <div class="col-span-6 flex flex-col gap-1 pr-4">
                         <span class="font-headline font-bold text-on-surface text-sm">{{ $attendance->schedule->title }}</span>
-                        <span class="font-body text-xs text-on-surface-variant line-clamp-1">{{ $attendance->schedule->description ?? 'Tidak ada detail.' }}</span>
+                        <div class="flex items-center gap-3">
+                            <span class="font-body text-xs text-on-surface-variant line-clamp-1">{{ $attendance->schedule->description ?? 'Tidak ada detail.' }}</span>
+                            @if($attendance->image_path || ($attendance->latitude && $attendance->longitude))
+                                <div class="flex items-center gap-2 border-l border-slate-200 pl-3 ml-1">
+                                    @if($attendance->image_path)
+                                        <a href="{{ asset('storage/' . $attendance->image_path) }}" target="_blank" class="text-primary hover:text-primary-container transition-colors" title="Lihat Foto Verifikasi">
+                                            <span class="material-symbols-outlined text-[18px]">image</span>
+                                        </a>
+                                    @endif
+                                    @if($attendance->latitude && $attendance->longitude)
+                                        <a href="https://www.google.com/maps?q={{ $attendance->latitude }},{{ $attendance->longitude }}" target="_blank" class="text-secondary hover:text-secondary-container transition-colors" title="Lihat Lokasi GPS">
+                                            <span class="material-symbols-outlined text-[18px]">location_on</span>
+                                        </a>
+                                    @endif
+                                </div>
+                            @endif
+                        </div>
                     </div>
                     <div class="col-span-3 flex justify-end">
                         @if($attendance->status === 'Hadir')

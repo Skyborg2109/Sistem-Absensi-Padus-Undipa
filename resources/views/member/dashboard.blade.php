@@ -54,10 +54,29 @@
         <div class="absolute left-0 top-0 bottom-0 w-1.5 gold-accent-bar rounded-l-2xl"></div>
         
         @if($nextSchedule)
+        @php
+            $now = \Carbon\Carbon::now();
+            $startTime = \Carbon\Carbon::parse($nextSchedule->date . ' ' . $nextSchedule->time);
+            $endTime = $startTime->copy()->addHours(2); // Durasi diasumsikan 2 jam
+            
+            $statusLabel = 'Latihan Berikutnya';
+            $statusIcon = 'schedule';
+            $statusColor = 'text-undipa-gold';
+            
+            if ($now->greaterThanOrEqualTo($startTime) && $now->lessThanOrEqualTo($endTime)) {
+                $statusLabel = 'Sesi Berlangsung';
+                $statusIcon = 'sync';
+                $statusColor = 'text-green-400';
+            } elseif ($now->greaterThan($endTime) && $now->isSameDay($startTime)) {
+                $statusLabel = 'Sesi Selesai';
+                $statusIcon = 'task_alt';
+                $statusColor = 'text-slate-300';
+            }
+        @endphp
         <div>
-            <div class="flex items-center gap-2 text-undipa-gold mb-4 font-label text-xs uppercase tracking-[0.15em] font-bold">
-                <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">schedule</span>
-                Latihan Berikutnya
+            <div class="flex items-center gap-2 {{ $statusColor }} mb-4 font-label text-xs uppercase tracking-[0.15em] font-bold">
+                <span class="material-symbols-outlined text-[18px] {{ $statusIcon == 'sync' ? 'animate-spin' : '' }}" style="font-variation-settings: 'FILL' 1;">{{ $statusIcon }}</span>
+                {{ $statusLabel }}
             </div>
             <h3 class="font-headline font-bold text-white mb-2 text-2xl">{{ $nextSchedule->title }}</h3>
             <p class="font-body text-blue-200 mb-6">{{ $nextSchedule->location ?? 'Belum ditentukan' }}</p>

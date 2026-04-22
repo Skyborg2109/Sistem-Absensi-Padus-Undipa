@@ -180,7 +180,10 @@ Route::middleware('auth')->group(function () {
             $request->validate([
                 'schedule_id' => 'required|exists:schedules,id',
                 'status' => 'required|in:Hadir,Izin,Sakit',
-                'notes' => 'nullable|string|max:255'
+                'notes' => 'nullable|string|max:255',
+                'image' => 'required|string',
+                'latitude' => 'required|numeric',
+                'longitude' => 'required|numeric'
             ]);
             
             $schedule = \App\Models\Schedule::findOrFail($request->schedule_id);
@@ -207,10 +210,34 @@ Route::middleware('auth')->group(function () {
                     $status = 'Terlambat';
                 }
             }
+
+            // Handle Image Upload (Base64)
+            $imagePath = null;
+            if ($request->image) {
+                try {
+                    $img = $request->image;
+                    $img = str_replace('data:image/jpeg;base64,', '', $img);
+                    $img = str_replace(' ', '+', $img);
+                    $imageData = base64_decode($img);
+                    
+                    $fileName = 'attendance_' . auth()->id() . '_' . time() . '.jpg';
+                    $imagePath = 'attendances/' . $fileName;
+                    
+                    \Illuminate\Support\Facades\Storage::disk('public')->put($imagePath, $imageData);
+                } catch (\Exception $e) {
+                    return redirect()->back()->withErrors(['message' => 'Gagal menyimpan foto: ' . $e->getMessage()]);
+                }
+            }
             
             \App\Models\Attendance::updateOrCreate(
                 ['user_id' => auth()->id(), 'schedule_id' => $request->schedule_id],
-                ['status' => $status, 'notes' => $request->notes]
+                [
+                    'status' => $status, 
+                    'notes' => $request->notes,
+                    'image_path' => $imagePath,
+                    'latitude' => $request->latitude,
+                    'longitude' => $request->longitude
+                ]
             );
             
             return redirect()->back()->with('success', 'Presensi berhasil disimpan!');

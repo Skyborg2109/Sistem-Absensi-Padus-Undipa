@@ -455,5 +455,6 @@
             setInterval(fetchNotifications, 15000);
         });
     </script>
+    @stack('scripts')
 </body>
 </html>

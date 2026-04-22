@@ -113,6 +113,22 @@
                                         "{{ $attendance->notes }}"
                                     </p>
                                 @endif
+                                @if($attendance && ($attendance->image_path || ($attendance->latitude && $attendance->longitude)))
+                                    <div class="flex items-center gap-2 mt-1.5 border-t border-slate-100 pt-1">
+                                        @if($attendance->image_path)
+                                            <a href="{{ asset('storage/' . $attendance->image_path) }}" target="_blank" class="flex items-center gap-0.5 text-[9px] font-bold uppercase tracking-tighter text-blue-600 hover:text-blue-800 transition-colors" title="Lihat Foto Verifikasi">
+                                                <span class="material-symbols-outlined text-[12px]">image</span>
+                                                Foto
+                                            </a>
+                                        @endif
+                                        @if($attendance->latitude && $attendance->longitude)
+                                            <a href="https://www.google.com/maps?q={{ $attendance->latitude }},{{ $attendance->longitude }}" target="_blank" class="flex items-center gap-0.5 text-[9px] font-bold uppercase tracking-tighter text-slate-500 hover:text-slate-700 transition-colors" title="Lihat Lokasi GPS">
+                                                <span class="material-symbols-outlined text-[12px]">location_on</span>
+                                                Peta
+                                            </a>
+                                        @endif
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
