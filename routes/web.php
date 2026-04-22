@@ -43,6 +43,12 @@ Route::middleware('auth')->group(function () {
         auth()->user()->unreadNotifications->markAsRead();
         return response()->json(['success' => true]);
     })->name('notifications.mark-as-read');
+
+    Route::get('/notifications', function () {
+        $notifications = auth()->user()->notifications()->paginate(20);
+        auth()->user()->unreadNotifications->markAsRead();
+        return view('notifications.index', compact('notifications'));
+    })->name('notifications.index');
     
     // Shared Routes
     Route::get('/profile', function () {

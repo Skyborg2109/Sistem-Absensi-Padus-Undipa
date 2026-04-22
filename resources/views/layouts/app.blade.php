@@ -307,8 +307,8 @@
                 <a href="{{ url('/settings') }}" class="nav-icon-btn">
                     <span class="material-symbols-outlined text-[22px] text-blue-200">settings</span>
                 </a>
-                <a href="{{ url('/profile') }}">
-                    <img alt="User profile photo" class="w-8 h-8 rounded-full object-cover border-2 border-undipa-gold shadow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMS-Jw1uWJ4xxtA-LPZI9F2ZiRIt6PxceB1tsOBUzOs6V_ul5XGvq-cdLKPfuIWOT6uDGqYqOl6rp0YIof7WRWFx6HYgjtNAvFkj_AYU7LrYXCkGzx13NMi7ufRlWGXsvmCDzo8IXY6P7kN8AwNCZDHi3GSlSqvy20kLZekGjxbj2LiZoG7h10gJ1nV75gUVvGaVMfaLhL6nN0bqxx8XNRDPuviP-xffFsZS3r2TqTEm12O3XofACQ2JiHLttP0QJrvCRpS9SPupE"/>
+                <a href="{{ url('/settings') }}">
+                    <img alt="User profile photo" class="w-8 h-8 rounded-full object-cover border-2 border-undipa-gold shadow" src="{{ auth()->user()->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=003087&color=ffffff' }}"/>
                 </a>
             </div>
         </header>
@@ -337,8 +337,8 @@
                     <span class="material-symbols-outlined">settings</span>
                 </a>
 
-                <a href="{{ url('/profile') }}" class="hover:ring-4 ring-undipa-gold/30 transition-all rounded-full ml-1 cursor-pointer">
-                    <img alt="User profile photo" class="w-11 h-11 rounded-full object-cover border-2 border-undipa-gold shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMS-Jw1uWJ4xxtA-LPZI9F2ZiRIt6PxceB1tsOBUzOs6V_ul5XGvq-cdLKPfuIWOT6uDGqYqOl6rp0YIof7WRWFx6HYgjtNAvFkj_AYU7LrYXCkGzx13NMi7ufRlWGXsvmCDzo8IXY6P7kN8AwNCZDHi3GSlSqvy20kLZekGjxbj2LiZoG7h10gJ1nV75gUVvGaVMfaLhL6nN0bqxx8XNRDPuviP-xffFsZS3r2TqTEm12O3XofACQ2JiHLttP0QJrvCRpS9SPupE"/>
+                <a href="{{ url('/settings') }}" class="hover:ring-4 ring-undipa-gold/30 transition-all rounded-full ml-1 cursor-pointer">
+                    <img alt="User profile photo" class="w-11 h-11 rounded-full object-cover border-2 border-undipa-gold shadow-md" src="{{ auth()->user()->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=003087&color=ffffff' }}"/>
                 </a>
             </div>
         </header>
@@ -456,8 +456,8 @@
                                 </a>`;
                             });
                             
-                            html += `<div class="p-3 text-center">
-                                <a href="#" class="text-xs font-bold text-slate-400 hover:text-blue-600 transition-colors">Tutup Panel</a>
+                            html += `<div class="p-3 text-center bg-slate-50 border-t border-slate-100">
+                                <a href="{{ url('/notifications') }}" class="text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors">Lihat Semua Notifikasi</a>
                             </div>`;
                         } else {
                             html = '<div class="p-10 text-center flex flex-col items-center gap-3"><span class="material-symbols-outlined text-4xl text-slate-200">notifications_off</span><p class="text-slate-400 text-xs font-medium">Belum ada pemberitahuan baru.</p></div>';
