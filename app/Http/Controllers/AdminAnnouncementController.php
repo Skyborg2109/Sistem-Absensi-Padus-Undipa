@@ -37,7 +37,11 @@ class AdminAnnouncementController extends Controller
             $data['attachment_path'] = $file->store('announcements', 'public');
         }
 
-        Announcement::create($data);
+        $announcement = Announcement::create($data);
+
+        // Send notification to all members
+        $members = \App\Models\User::where('role', 'member')->get();
+        \Illuminate\Support\Facades\Notification::send($members, new \App\Notifications\AnnouncementNotification($announcement));
 
         return redirect()->route('admin.announcements.index')->with('success', 'Pengumuman / Aturan berhasil ditambahkan.');
     }

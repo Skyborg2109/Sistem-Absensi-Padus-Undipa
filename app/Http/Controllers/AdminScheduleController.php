@@ -32,7 +32,13 @@ class AdminScheduleController extends Controller
             'status' => 'required|in:active,completed',
         ]);
 
-        Schedule::create($validated);
+        $schedule = Schedule::create($validated);
+
+        // Send notification to all members if schedule is active
+        if ($schedule->status === 'active') {
+            $members = \App\Models\User::where('role', 'member')->get();
+            \Illuminate\Support\Facades\Notification::send($members, new \App\Notifications\ScheduleNotification($schedule));
+        }
 
         return redirect()->route('admin.schedules.index')->with('success', 'Jadwal latihan berhasil ditambahkan.');
     }

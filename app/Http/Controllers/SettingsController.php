@@ -38,6 +38,19 @@ class SettingsController extends Controller
             'faculty' => $validated['faculty'] ?? $user->faculty,
         ]);
 
+        if ($request->hasFile('avatar')) {
+            try {
+                $cloudinary = new \Cloudinary\Cloudinary(config('services.cloudinary.url'));
+                $upload = $cloudinary->uploadApi()->upload($request->file('avatar')->getRealPath(), [
+                    'folder' => 'avatars',
+                    'public_id' => 'avatar_' . $user->id . '_' . time(),
+                ]);
+                $user->avatar_url = $upload['secure_url'];
+            } catch (\Exception $e) {
+                return back()->withErrors(['message' => 'Gagal mengunggah foto profil: ' . $e->getMessage()]);
+            }
+        }
+
         if (!empty($validated['new_password'])) {
             $user->password = Hash::make($validated['new_password']);
         }

@@ -31,13 +31,18 @@ Route::middleware('auth')->group(function () {
     // Download Announcement Attachment (Shared)
     Route::get('/announcements/{announcement}/download', [MemberAnnouncementController::class, 'download'])->name('announcements.download');
 
-    // Notifications Route
+    // Notifications Routes
     Route::get('/notifications/unread', function () {
         return response()->json([
             'count' => auth()->user()->unreadNotifications()->count(),
             'notifications' => auth()->user()->unreadNotifications()->take(5)->get()
         ]);
     })->name('notifications.unread');
+
+    Route::post('/notifications/mark-as-read', function () {
+        auth()->user()->unreadNotifications->markAsRead();
+        return response()->json(['success' => true]);
+    })->name('notifications.mark-as-read');
     
     // Shared Routes
     Route::get('/profile', function () {
@@ -236,21 +241,18 @@ Route::middleware('auth')->group(function () {
                 }
             }
 
-            // Handle Image Upload (Base64)
+            // Handle Image Upload (Cloudinary)
             $imagePath = null;
             if ($request->image) {
                 try {
-                    $img = $request->image;
-                    $img = str_replace('data:image/jpeg;base64,', '', $img);
-                    $img = str_replace(' ', '+', $img);
-                    $imageData = base64_decode($img);
-                    
-                    $fileName = 'attendance_' . auth()->id() . '_' . time() . '.jpg';
-                    $imagePath = 'attendances/' . $fileName;
-                    
-                    \Illuminate\Support\Facades\Storage::disk('public')->put($imagePath, $imageData);
+                    $cloudinary = new \Cloudinary\Cloudinary(config('services.cloudinary.url'));
+                    $upload = $cloudinary->uploadApi()->upload($request->image, [
+                        'folder' => 'attendances',
+                        'public_id' => 'attendance_' . auth()->id() . '_' . time(),
+                    ]);
+                    $imagePath = $upload['secure_url']; // Save the full URL
                 } catch (\Exception $e) {
-                    return redirect()->back()->withErrors(['message' => 'Gagal menyimpan foto: ' . $e->getMessage()]);
+                    return redirect()->back()->withErrors(['message' => 'Gagal mengunggah foto ke Cloudinary: ' . $e->getMessage()]);
                 }
             }
             

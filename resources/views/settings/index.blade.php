@@ -27,11 +27,33 @@
     @endif
 
     <div class="bg-surface-container-lowest rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100">
-        <form action="{{ route('settings.update') }}" method="POST" class="space-y-6">
+        <form action="{{ route('settings.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')
             
             <h2 class="text-xl font-bold font-headline text-on-surface mb-4 pb-2 border-b border-slate-100">Informasi Pribadi</h2>
+            
+            <!-- Avatar Upload -->
+            <div class="flex items-center gap-6 mb-8">
+                <div class="relative group">
+                    <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-slate-50 shadow-md bg-slate-100 flex items-center justify-center">
+                        @if($user->avatar_url)
+                            <img src="{{ $user->avatar_url }}" alt="Avatar" class="w-full h-full object-cover">
+                        @else
+                            <span class="material-symbols-outlined text-4xl text-slate-400">person</span>
+                        @endif
+                    </div>
+                    <label for="avatar-input" class="absolute inset-0 flex items-center justify-center bg-black/40 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                        <span class="material-symbols-outlined">photo_camera</span>
+                    </label>
+                    <input type="file" id="avatar-input" name="avatar" class="hidden" accept="image/*" onchange="previewAvatar(this)">
+                </div>
+                <div class="flex flex-col gap-1">
+                    <p class="font-bold text-slate-900">Foto Profil</p>
+                    <p class="text-xs text-slate-500">Gunakan format JPG atau PNG (Maks. 2MB)</p>
+                    <button type="button" onclick="document.getElementById('avatar-input').click()" class="text-xs font-bold text-primary mt-1 text-left hover:underline">Ubah Foto</button>
+                </div>
+            </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -72,4 +94,23 @@
         </form>
     </div>
 </div>
+@push('scripts')
+<script>
+    function previewAvatar(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = input.previousElementSibling.previousElementSibling.querySelector('img') || document.createElement('img');
+                if (!input.previousElementSibling.previousElementSibling.querySelector('img')) {
+                    input.previousElementSibling.previousElementSibling.innerHTML = '';
+                    input.previousElementSibling.previousElementSibling.appendChild(img);
+                }
+                img.src = e.target.result;
+                img.className = 'w-full h-full object-cover';
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+@endpush
 @endsection

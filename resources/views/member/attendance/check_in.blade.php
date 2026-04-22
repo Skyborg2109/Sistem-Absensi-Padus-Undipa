@@ -39,7 +39,12 @@
                     @else
                         <span class="material-symbols-outlined text-[64px] text-green-500 mb-4">check_circle</span>
                         <h2 class="font-headline text-2xl font-bold text-on-surface">Presensi Selesai</h2>
-                        <p class="text-on-surface-variant text-sm mt-2">Anda sudah melakukan presensi untuk sesi ini ({{ isset($attendanceRecord) ? $attendanceRecord->status : 'Terekam' }}). Selamat berlatih!</p>
+                        <p class="text-on-surface-variant text-sm mt-2">
+                            Anda sudah melakukan presensi untuk sesi ini ({{ isset($attendanceRecord) ? $attendanceRecord->status : 'Terekam' }}).
+                            @if(isset($attendanceRecord) && !in_array($attendanceRecord->status, ['Izin', 'Sakit']))
+                                Selamat berlatih!
+                            @endif
+                        </p>
                     @endif
                 </div>
                 @elseif(!$isCheckinAllowed)

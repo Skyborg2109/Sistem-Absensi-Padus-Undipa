@@ -116,7 +116,7 @@
                                 @if($attendance && ($attendance->image_path || ($attendance->latitude && $attendance->longitude)))
                                     <div class="flex items-center gap-2 mt-1.5 border-t border-slate-100 pt-1">
                                         @if($attendance->image_path)
-                                            <a href="{{ asset('storage/' . $attendance->image_path) }}" target="_blank" class="flex items-center gap-0.5 text-[9px] font-bold uppercase tracking-tighter text-blue-600 hover:text-blue-800 transition-colors" title="Lihat Foto Verifikasi">
+                                            <a href="{{ str_starts_with($attendance->image_path, 'http') ? $attendance->image_path : asset('storage/' . $attendance->image_path) }}" target="_blank" class="flex items-center gap-0.5 text-[9px] font-bold uppercase tracking-tighter text-blue-600 hover:text-blue-800 transition-colors" title="Lihat Foto Verifikasi">
                                                 <span class="material-symbols-outlined text-[12px]">image</span>
                                                 Foto
                                             </a>

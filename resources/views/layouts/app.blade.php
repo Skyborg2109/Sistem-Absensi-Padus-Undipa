@@ -422,7 +422,11 @@
                         
                         if (count > 0) {
                             if(mobileIndicator) mobileIndicator.classList.remove('hidden');
-                            if(desktopIndicator) desktopIndicator.classList.remove('hidden');
+                            if(desktopIndicator) {
+                                desktopIndicator.classList.remove('hidden');
+                                desktopIndicator.innerText = count > 9 ? '9+' : count;
+                                desktopIndicator.className = "absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white shadow-sm";
+                            }
                         } else {
                             if(mobileIndicator) mobileIndicator.classList.add('hidden');
                             if(desktopIndicator) desktopIndicator.classList.add('hidden');
@@ -430,14 +434,33 @@
                         
                         let html = '';
                         if (notifications && notifications.length > 0) {
+                            html = `<div class="px-4 py-2 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">${count} Pesan Baru</span>
+                                <button onclick="markAllAsRead()" class="text-[10px] font-bold text-blue-600 hover:text-blue-800 transition-colors">Tandai Dibaca</button>
+                            </div>`;
+                            
                             notifications.forEach(notif => {
-                                html += `<div class="p-3 border-b border-slate-100 hover:bg-slate-50 text-sm">
-                                    <p class="text-slate-800">${notif.data.message || 'Pemberitahuan Sistem'}</p>
-                                    <span class="text-xs text-slate-400 mt-1 block">${new Date(notif.created_at).toLocaleDateString()}</span>
-                                </div>`;
+                                const data = notif.data;
+                                const icon = data.icon || 'notifications';
+                                const color = data.type === 'peraturan' ? 'text-orange-500 bg-orange-50' : (data.type === 'jadwal' ? 'text-blue-500 bg-blue-50' : 'text-slate-500 bg-slate-50');
+                                
+                                html += `<a href="${data.url || '#'}" class="flex items-start gap-3 p-4 border-b border-slate-100 hover:bg-slate-50 transition-all group">
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${color} transition-transform group-hover:scale-110">
+                                        <span class="material-symbols-outlined text-[20px]">${icon}</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="text-sm font-bold text-slate-800 leading-tight group-hover:text-blue-700 transition-colors">${data.title || 'Informasi'}</p>
+                                        <p class="text-[11px] text-slate-500 mt-1 line-clamp-2">${data.message}</p>
+                                        <span class="text-[9px] text-slate-400 mt-2 block font-medium tracking-wide uppercase">${new Date(notif.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'})}</span>
+                                    </div>
+                                </a>`;
                             });
+                            
+                            html += `<div class="p-3 text-center">
+                                <a href="#" class="text-xs font-bold text-slate-400 hover:text-blue-600 transition-colors">Tutup Panel</a>
+                            </div>`;
                         } else {
-                            html = '<div class="p-4 text-center text-slate-500 text-sm">Tidak ada notifikasi baru</div>';
+                            html = '<div class="p-10 text-center flex flex-col items-center gap-3"><span class="material-symbols-outlined text-4xl text-slate-200">notifications_off</span><p class="text-slate-400 text-xs font-medium">Belum ada pemberitahuan baru.</p></div>';
                         }
                         
                         const mList = document.getElementById('notifListMobile');
@@ -448,11 +471,28 @@
                     .catch(error => console.error('Error fetching notifications:', error));
             }
             
+            window.markAllAsRead = function() {
+                fetch('{{ route("notifications.mark-as-read") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        fetchNotifications();
+                    }
+                })
+                .catch(error => console.error('Error marking as read:', error));
+            };
+            
             // Check immediately on load
             fetchNotifications();
             
-            // Then poll every 15 seconds
-            setInterval(fetchNotifications, 15000);
+            // Then poll every 30 seconds (save resources)
+            setInterval(fetchNotifications, 30000);
         });
     </script>
     @stack('scripts')
