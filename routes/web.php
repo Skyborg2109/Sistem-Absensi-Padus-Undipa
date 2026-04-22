@@ -203,8 +203,33 @@ Route::middleware('auth')->group(function () {
             }
             
             $status = $request->status;
-            // Jika status Hadir, periksa keterlambatan (> 10 menit)
+            
+            // Geofencing: Check if status is 'Hadir' (or if we want to check 'Terlambat' too)
             if ($status === 'Hadir') {
+                // Koordinat Universitas Dipa Makassar (KM 9)
+                $campusLat = -5.140357;
+                $campusLng = 119.480506;
+                $allowedRadius = 200; // 200 meter
+                
+                // Haversine formula for distance
+                $earthRadius = 6371000;
+                $latFrom = deg2rad($request->latitude);
+                $lonFrom = deg2rad($request->longitude);
+                $latTo = deg2rad($campusLat);
+                $lonTo = deg2rad($campusLng);
+
+                $latDelta = $latTo - $latFrom;
+                $lonDelta = $lonTo - $lonFrom;
+
+                $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+                    cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+                $distance = $angle * $earthRadius;
+
+                if ($distance > $allowedRadius) {
+                    return redirect()->back()->withErrors(['message' => 'Presensi ditolak. Anda berada ' . round($distance) . 'm dari kampus. Presensi "Hadir" wajib dilakukan di area Kampus UNDIPA. Pilih "Izin" jika Anda berhalangan.']);
+                }
+
+                // Jika status Hadir & di dalam kampus, periksa keterlambatan (> 10 menit)
                 $lateThreshold = $startTime->copy()->addMinutes(10);
                 if ($now->isAfter($lateThreshold)) {
                     $status = 'Terlambat';
